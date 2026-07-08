@@ -2,22 +2,32 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "dev": "tsx watch --env-file=.env src/app.ts",
     "build": "tsc",
-    "start": "node --env-file=.env dist/app.js"
+    "start": "node --env-file=.env dist/app.js",
+    "prisma:generate": "node --env-file=.env ./node_modules/prisma/build/index.js generate",
+    "prisma:migrate": "node --env-file=.env ./node_modules/prisma/build/index.js migrate dev",
+    "prisma:reset": "node --env-file=.env ./node_modules/prisma/build/index.js migrate reset",
+    "queryTest": "tsx --env-file=.env src/db/queries.ts",
+    "prisma:studio": "node --env-file=.env ./node_modules/prisma/build/index.js studio"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "express": "^5.2.1"
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^26.1.0",
+    "@types/pg": "^8.20.0",
+    "prisma": "^7.8.0",
     "tsx": "^4.23.0",
     "typescript": "^6.0.3"
   }
