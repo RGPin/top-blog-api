@@ -5,8 +5,11 @@ type GetCommentsParams = {
   postId: string;
 };
 
-type CreateCommentBody = {
+type CreateCommentParams = {
   postId: string;
+};
+
+type CreateCommentBody = {
   content: string;
 };
 
@@ -35,10 +38,16 @@ const getComments = async (
 };
 
 const postCreateComment = async (
-  req: Request,
+  req: Request<CreateCommentParams>,
   res: Response,
 ): Promise<void> => {
   const body = req.body as CreateCommentBody;
+  const postId = Number(req.params.postId);
+
+  if (isNaN(postId)) {
+    res.status(400).json({ message: "Invalid Post ID format" });
+    return;
+  }
 };
 
 const putEditComment = async (
