@@ -42,6 +42,9 @@ CREATE INDEX "Post_authorId_idx" ON "Post"("authorId");
 CREATE INDEX "Post_published_idx" ON "Post"("published");
 
 -- CreateIndex
+CREATE INDEX "Post_authorId_published_idx" ON "Post"("authorId", "published");
+
+-- CreateIndex
 CREATE INDEX "Comment_postId_idx" ON "Comment"("postId");
 
 -- CreateIndex

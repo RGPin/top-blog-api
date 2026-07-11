@@ -33,6 +33,7 @@ model Post {
 
   @@index([authorId])
   @@index([published])
+  @@index([authorId, published])
 }
 
 model Comment {
