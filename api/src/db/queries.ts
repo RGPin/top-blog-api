@@ -128,38 +128,33 @@ const retrieveAuthorPosts = async (
   }
 };
 
-// This one's for learning purposes:
-// type? let ts infer type. Or use Prisma's GetPayload
-// const retrievePublishedPosts = async () => {
-//   try {
-//     const publishedPosts = await prisma.post.findMany({
-//       where: { published: true },
-//       include: {
-//         author: {
-//           select: { id: true, name: true },
-//         },
-//         comments: {
-//           select: {
-//             id: true,
-//             content: true,
-//             createdAt: true,
-//             updatedAt: true,
-//             author: {
-//               select: { id: true, name: true },
-//             },
-//           },
-//         },
-//       },
-//       orderBy: {
-//         createdAt: "desc",
-//       },
-//     });
-//     return publishedPosts;
-//   } catch (error) {
-//     console.error("retrievePosts failed: ", { error });
-//     throw error;
-//   }
-// };
+const retrievePostWithComments = async (postId: number) => {
+  try {
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      include: {
+        author: {
+          select: { id: true, name: true },
+        },
+        comments: {
+          select: {
+            id: true,
+            content: true,
+            createdAt: true,
+            updatedAt: true,
+            author: {
+              select: { id: true, name: true },
+            },
+          },
+        },
+      },
+    });
+    return post;
+  } catch (error) {
+    console.error("retrievePostWithComments failed: ", { error });
+    throw error;
+  }
+};
 
 const retrievePublishedPosts = async (): Promise<Post[]> => {
   try {
@@ -171,7 +166,20 @@ const retrievePublishedPosts = async (): Promise<Post[]> => {
     });
     return publishedPosts;
   } catch (error) {
-    console.error("retrievePosts failed: ", { error });
+    console.error("retrievePublishedPosts failed: ", { error });
+    throw error;
+  }
+};
+
+const unpublishPost = async (postId: number): Promise<Post> => {
+  try {
+    const unpublishedPost = await prisma.post.update({
+      where: { id: postId },
+      data: { published: false },
+    });
+    return unpublishedPost;
+  } catch (error) {
+    console.error("unpublishPost failed: ", { error });
     throw error;
   }
 };
