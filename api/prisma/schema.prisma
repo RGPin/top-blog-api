@@ -13,11 +13,12 @@ datasource db {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  email    String    @unique
-  name     String?
-  posts    Post[]
-  comments Comment[]
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  name          String?
+  posts         Post[]
+  comments      Comment[]
+  refreshTokens RefreshToken[]
 }
 
 model Post {
@@ -48,4 +49,13 @@ model Comment {
 
   @@index([postId])
   @@index([authorId])
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }

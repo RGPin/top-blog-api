@@ -1,6 +1,11 @@
 import { prisma } from "./prismaInstance.js";
 import { Prisma } from "./generated/prisma/client";
-import type { User, Post, Comment } from "./generated/prisma/client.js";
+import type {
+  User,
+  Post,
+  Comment,
+  RefreshToken,
+} from "./generated/prisma/client.js";
 
 type CommentWithAuthor = Comment & {
   author: Pick<User, "id" | "name">;
@@ -63,14 +68,74 @@ export const updateUser = async (
   }
 };
 
-export const findUser = async (email: string): Promise<User | null> => {
+export const findUserByEmail = async (email: string): Promise<User | null> => {
   try {
     const user = await prisma.user.findUnique({
       where: { email },
     });
     return user;
   } catch (error) {
-    console.error("findUser failed: ", { error });
+    console.error("findUserByEmail failed: ", { error });
+    throw error;
+  }
+};
+
+export const findUserById = async (userId: number): Promise<User | null> => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+    return user;
+  } catch (error) {
+    console.error("findUserById failed: ", { error });
+    throw error;
+  }
+};
+
+export const storeRefreshToken = async (
+  userId: number,
+  token: string,
+  expiresAt: Date,
+): Promise<RefreshToken> => {
+  try {
+    const refreshToken = await prisma.refreshToken.create({
+      data: {
+        userId,
+        token,
+        expiresAt,
+      },
+    });
+    return refreshToken;
+  } catch (error) {
+    console.error("saveRefreshToken failed: ", { error });
+    throw error;
+  }
+};
+
+export const findToken = async (
+  token: string,
+): Promise<RefreshToken | null> => {
+  try {
+    const storedToken = await prisma.refreshToken.findUnique({
+      where: { token },
+    });
+    return storedToken;
+  } catch (error) {
+    console.error("findToken failed: ", { error });
+    throw error;
+  }
+};
+
+export const deleteRefreshToken = async (
+  token: string,
+): Promise<RefreshToken> => {
+  try {
+    const deletedToken = await prisma.refreshToken.delete({
+      where: { token },
+    });
+    return deletedToken;
+  } catch (error) {
+    console.error("saveRefreshToken failed: ", { error });
     throw error;
   }
 };

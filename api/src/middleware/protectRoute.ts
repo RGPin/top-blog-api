@@ -27,13 +27,13 @@ export const protectRoute = (
     return;
   }
 
-  const token = authHeader.split(" ")[1];
+  const token = authHeader.split(" ")[1] as string;
 
   try {
     const decoded = jwt.verify(
       token,
       process.env.JWT_SECRET as string,
-    ) as DecodedToken;
+    ) as unknown as DecodedToken;
 
     req.user = decoded;
 
