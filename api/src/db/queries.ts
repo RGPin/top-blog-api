@@ -6,7 +6,10 @@ type CommentWithAuthor = Comment & {
   author: Pick<User, "id" | "name">;
 };
 
-const createUser = async (email: string, name?: string): Promise<User> => {
+export const createUser = async (
+  email: string,
+  name?: string,
+): Promise<User> => {
   try {
     const newUser = await prisma.user.create({
       data: {
@@ -26,7 +29,7 @@ const createUser = async (email: string, name?: string): Promise<User> => {
   }
 };
 
-const deleteUser = async (userId: number): Promise<User> => {
+export const deleteUser = async (userId: number): Promise<User> => {
   try {
     const deletedUser = await prisma.user.delete({
       where: {
@@ -40,7 +43,10 @@ const deleteUser = async (userId: number): Promise<User> => {
   }
 };
 
-const updateUser = async (userId: number, name: string): Promise<User> => {
+export const updateUser = async (
+  userId: number,
+  name: string,
+): Promise<User> => {
   try {
     const updatedUser = await prisma.user.update({
       where: {
@@ -57,7 +63,19 @@ const updateUser = async (userId: number, name: string): Promise<User> => {
   }
 };
 
-const createPost = async (
+export const findUser = async (email: string): Promise<User | null> => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+    return user;
+  } catch (error) {
+    console.error("findUser failed: ", { error });
+    throw error;
+  }
+};
+
+export const createPost = async (
   title: string,
   authorId: number,
   content?: string,
@@ -77,7 +95,7 @@ const createPost = async (
   }
 };
 
-const publishPost = async (postId: number): Promise<Post> => {
+export const publishPost = async (postId: number): Promise<Post> => {
   try {
     const publishedPost = await prisma.post.update({
       where: { id: postId },
@@ -90,7 +108,7 @@ const publishPost = async (postId: number): Promise<Post> => {
   }
 };
 
-const updatePost = async (
+export const updatePost = async (
   postId: number,
   title?: string,
   content?: string,
@@ -110,7 +128,7 @@ const updatePost = async (
   }
 };
 
-const retrieveAuthorPosts = async (
+export const retrieveAuthorPosts = async (
   authorId: number,
   publishedFilter: boolean,
 ): Promise<Post[]> => {
@@ -128,7 +146,7 @@ const retrieveAuthorPosts = async (
   }
 };
 
-const retrievePostWithComments = async (postId: number) => {
+export const retrievePostWithComments = async (postId: number) => {
   try {
     const post = await prisma.post.findUnique({
       where: { id: postId },
@@ -156,7 +174,7 @@ const retrievePostWithComments = async (postId: number) => {
   }
 };
 
-const retrievePublishedPosts = async (): Promise<Post[]> => {
+export const retrievePublishedPosts = async (): Promise<Post[]> => {
   try {
     const publishedPosts = await prisma.post.findMany({
       where: { published: true },
@@ -171,7 +189,7 @@ const retrievePublishedPosts = async (): Promise<Post[]> => {
   }
 };
 
-const unpublishPost = async (postId: number): Promise<Post> => {
+export const unpublishPost = async (postId: number): Promise<Post> => {
   try {
     const unpublishedPost = await prisma.post.update({
       where: { id: postId },
@@ -184,7 +202,7 @@ const unpublishPost = async (postId: number): Promise<Post> => {
   }
 };
 
-const deletePost = async (postId: number): Promise<Post> => {
+export const deletePost = async (postId: number): Promise<Post> => {
   try {
     const deletedPost = await prisma.post.delete({
       where: { id: postId },
@@ -196,7 +214,7 @@ const deletePost = async (postId: number): Promise<Post> => {
   }
 };
 
-const retrieveComments = async (
+export const retrieveComments = async (
   postId: number,
 ): Promise<CommentWithAuthor[]> => {
   try {
@@ -216,7 +234,7 @@ const retrieveComments = async (
   }
 };
 
-const createComment = async (
+export const createComment = async (
   authorId: number,
   postId: number,
   content: string,
@@ -232,7 +250,7 @@ const createComment = async (
   }
 };
 
-const deleteComment = async (commentId: number): Promise<Comment> => {
+export const deleteComment = async (commentId: number): Promise<Comment> => {
   try {
     const deletedComment = await prisma.comment.delete({
       where: { id: commentId },
@@ -244,7 +262,7 @@ const deleteComment = async (commentId: number): Promise<Comment> => {
   }
 };
 
-const updateComment = async (
+export const updateComment = async (
   commentId: number,
   content: string,
 ): Promise<Comment> => {
