@@ -1,7 +1,8 @@
 import type { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import * as db from "../db/queries.js";
-import { generateRefreshToken } from "../lib/generateRefreshToken.js";
+import { generateRefreshToken } from "../utils/generateRefreshToken.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 type SignupBody = {
   email: string;
@@ -12,8 +13,8 @@ type LoginBody = {
   email: string;
 };
 
-const postSignup = async (req: Request, res: Response): Promise<void> => {
-  try {
+export const postSignup = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
     const body = req.body as SignupBody;
     const name = body.name?.trim() || undefined;
     const email = body.email?.trim();
@@ -42,14 +43,11 @@ const postSignup = async (req: Request, res: Response): Promise<void> => {
       message: "success",
       user: createdUser,
     });
-  } catch (error) {
-    console.error("postSignup failed: ", { error });
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
+  },
+);
 
-const postLogin = async (req: Request, res: Response): Promise<void> => {
-  try {
+export const postLogin = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
     const body = req.body as LoginBody;
     const email = body.email?.trim();
 
@@ -93,14 +91,11 @@ const postLogin = async (req: Request, res: Response): Promise<void> => {
       accessToken,
       user,
     });
-  } catch (error) {
-    console.error("postLogin failed: ", { error });
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
+  },
+);
 
-const postRefresh = async (req: Request, res: Response): Promise<void> => {
-  try {
+export const postRefresh = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
     const refreshToken = req.cookies.refresh_token;
 
     if (!refreshToken) {
@@ -127,14 +122,11 @@ const postRefresh = async (req: Request, res: Response): Promise<void> => {
       message: "success",
       accessToken: newAccessToken,
     });
-  } catch (error) {
-    console.error("postRefresh failed: ", { error });
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
+  },
+);
 
-const deleteLogout = async (req: Request, res: Response): Promise<void> => {
-  try {
+export const deleteLogout = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
     const refreshToken = req.cookies.refresh_token;
 
     if (refreshToken) {
@@ -149,10 +141,5 @@ const deleteLogout = async (req: Request, res: Response): Promise<void> => {
     });
 
     res.status(200).json({ message: "success" });
-  } catch (error) {
-    console.error("deleteLogout failed: ", { error });
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-export { postSignup, postLogin, deleteLogout, postRefresh };
+  },
+);

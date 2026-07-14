@@ -135,6 +135,18 @@ export const deleteRefreshToken = async (
   }
 };
 
+export const findPost = async (postId: number): Promise<Post | null> => {
+  try {
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+    return post;
+  } catch (error) {
+    console.error("findPost failed: ", { error });
+    throw error;
+  }
+};
+
 export const createPost = async (
   title: string,
   authorId: number,
@@ -190,7 +202,7 @@ export const updatePost = async (
 
 export const retrieveAuthorPosts = async (
   authorId: number,
-  publishedFilter: boolean,
+  publishedFilter?: boolean,
 ): Promise<Post[]> => {
   try {
     const authorPosts = await prisma.post.findMany({
@@ -270,6 +282,20 @@ export const deletePost = async (postId: number): Promise<Post> => {
     return deletedPost;
   } catch (error) {
     console.error("deletePost failed: ", { error });
+    throw error;
+  }
+};
+
+export const findComment = async (
+  commentId: number,
+): Promise<Comment | null> => {
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: { id: commentId },
+    });
+    return comment;
+  } catch (error) {
+    console.error("findComment failed: ", { error });
     throw error;
   }
 };
