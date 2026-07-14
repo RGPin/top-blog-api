@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-// Request<Params, ResBody, ReqBody, ReqQuery, Locals>
+import * as db from "../db/queries.js";
 
-type GetCommentsParams = {
+type PostDetailParams = {
   postId: string;
 };
 
@@ -25,8 +25,13 @@ type DeleteCommentParams = {
   commentId: string;
 };
 
-const getComments = async (
-  req: Request<GetCommentsParams>,
+export const getPosts = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {};
+
+export const getPostDetails = async (
+  req: Request<PostDetailParams>,
   res: Response,
 ): Promise<void> => {
   const postId = Number(req.params.postId);
@@ -37,7 +42,7 @@ const getComments = async (
   }
 };
 
-const postCreateComment = async (
+export const postCreateComment = async (
   req: Request<CreateCommentParams>,
   res: Response,
 ): Promise<void> => {
@@ -50,7 +55,7 @@ const postCreateComment = async (
   }
 };
 
-const putEditComment = async (
+export const putEditComment = async (
   req: Request<EditCommentParams>,
   res: Response,
 ): Promise<void> => {
@@ -63,7 +68,7 @@ const putEditComment = async (
   }
 };
 
-const deleteComment = async (
+export const deleteComment = async (
   req: Request<DeleteCommentParams>,
   res: Response,
 ): Promise<void> => {
@@ -74,5 +79,3 @@ const deleteComment = async (
     return;
   }
 };
-
-export { getComments, postCreateComment, putEditComment, deleteComment };
