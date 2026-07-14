@@ -2,6 +2,7 @@
 // npm install --save-dev prisma dotenv
 // let's use scripts
 // import "dotenv/config";
+/// <reference types="node" />
 import { defineConfig } from "prisma/config";
 
 export default defineConfig({

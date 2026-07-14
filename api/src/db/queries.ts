@@ -1,11 +1,6 @@
 import { prisma } from "./prismaInstance.js";
-import { Prisma } from "./generated/prisma/client";
-import type {
-  User,
-  Post,
-  Comment,
-  RefreshToken,
-} from "./generated/prisma/client.js";
+import { Prisma } from "@prisma/client";
+import type { User, Post, Comment, RefreshToken } from "@prisma/client";
 
 type CommentWithAuthor = Comment & {
   author: Pick<User, "id" | "name">;
