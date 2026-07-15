@@ -1,0 +1,34 @@
+import type { PostDetails } from "../../types";
+import Comment from "../Comment/Comment";
+
+type PostProps = {
+  post: PostDetails;
+};
+export default function CommentsArea({ post }: PostProps) {
+  return (
+    <>
+      {post.comments && post.comments.length > 0 ? (
+        <section className="comments-section" aria-label="Post comments">
+          <h3 className="comments-heading">
+            Comments ({post.comments.length})
+          </h3>
+          <ul className="comments-list">
+            {post.comments.map((comment) => (
+              <Comment key={comment.id} comment={comment} />
+            ))}
+          </ul>
+        </section>
+      ) : (
+        <section
+          className="comments-section empty-comments"
+          aria-label="Post comments"
+        >
+          <h3 className="comments-heading">Comments (0)</h3>
+          <p className="no-comments-message">
+            No comments yet. Be the first to share your thoughts!
+          </p>
+        </section>
+      )}
+    </>
+  );
+}

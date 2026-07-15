@@ -59,3 +59,15 @@ export type PostDetails = {
 export type PostDetailsResponse = {
   postDetails: PostDetails;
 };
+
+export type Comment = {
+  id: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+
+  author: {
+    id: number;
+    name: string | null;
+  };
+};

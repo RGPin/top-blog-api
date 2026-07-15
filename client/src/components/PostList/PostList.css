@@ -15,13 +15,12 @@
   }
 
   .post-link {
-    display: inline-block;
-    width: fit-content;
+    display: inline;
     text-decoration: none;
     color: inherit;
   }
 
-  .post-link:hover .post-title {
+  .post-link:hover {
     text-decoration: underline;
   }
 
