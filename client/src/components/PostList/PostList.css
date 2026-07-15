@@ -1,0 +1,23 @@
+.post-list {
+  max-width: 700px;
+
+  .post-list-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .post-item {
+    border: 1px solid black;
+    padding: var(--space-md) var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    border-radius: var(--radius-xxs);
+  }
+
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+  }
+}

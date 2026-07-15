@@ -1,4 +1,6 @@
+import { Link } from "react-router";
 import { useFetchPost } from "../../hooks/queries";
+import "./PostList.css";
 
 export default function PostList() {
   const postsQuery = useFetchPost();
@@ -11,9 +13,24 @@ export default function PostList() {
 
   return (
     <div className="post-list">
-      <ul>
-        {posts && posts.map((item) => <li key={item.id}>{item.title}</li>)}
-      </ul>
+      <div className="post-list-grid">
+        {posts &&
+          posts.map((item) => (
+            <Link to="/" key={item.id}>
+              <article className="post-item">
+                <h2 className="post-title">{item.title}</h2>
+                <div className="post-meta">
+                  <p>{item.author.name}</p>
+                  <time
+                    dateTime={new Date(item.updatedAt).toLocaleDateString()}
+                  >
+                    {new Date(item.updatedAt).toLocaleDateString()}
+                  </time>
+                </div>
+              </article>
+            </Link>
+          ))}
+      </div>
     </div>
   );
 }

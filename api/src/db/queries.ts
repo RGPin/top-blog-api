@@ -6,6 +6,10 @@ type CommentWithAuthor = Comment & {
   author: Pick<User, "id" | "name">;
 };
 
+type PostsWithAuthors = Post & {
+  author: Pick<User, "name">;
+};
+
 export const createUser = async (
   email: string,
   name?: string,
@@ -246,10 +250,15 @@ export const retrievePostWithComments = async (postId: number) => {
   }
 };
 
-export const retrievePublishedPosts = async (): Promise<Post[]> => {
+export const retrievePublishedPosts = async (): Promise<PostsWithAuthors[]> => {
   try {
     const publishedPosts = await prisma.post.findMany({
       where: { published: true },
+      include: {
+        author: {
+          select: { name: true },
+        },
+      },
       orderBy: {
         createdAt: "desc",
       },

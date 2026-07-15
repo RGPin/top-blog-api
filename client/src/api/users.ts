@@ -1,6 +1,8 @@
-import type { Post, PostsResponse } from "../types";
+import type { PostWithAuthor, PostsResponse } from "../types";
 
-export const getPosts = async (signal: AbortSignal): Promise<Post[]> => {
+export const getPosts = async (
+  signal: AbortSignal,
+): Promise<PostWithAuthor[]> => {
   const response = await fetch("/api/user/posts", { signal });
   if (!response.ok) throw new Error(response.statusText);
   const data: PostsResponse = await response.json();
