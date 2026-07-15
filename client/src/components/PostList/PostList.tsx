@@ -16,19 +16,17 @@ export default function PostList() {
       <div className="post-list-grid">
         {posts &&
           posts.map((item) => (
-            <Link to={`/post/${item.id}`} key={item.id}>
-              <article className="post-item">
+            <article className="post-item" key={item.id}>
+              <Link to={`/post/${item.id}`} className="post-link">
                 <h2 className="post-title">{item.title}</h2>
-                <div className="post-meta">
-                  <p>{item.author.name}</p>
-                  <time
-                    dateTime={new Date(item.updatedAt).toLocaleDateString()}
-                  >
-                    {new Date(item.updatedAt).toLocaleDateString()}
-                  </time>
-                </div>
-              </article>
-            </Link>
+              </Link>
+              <div className="post-meta">
+                <p>{item.author.name}</p>
+                <time dateTime={new Date(item.updatedAt).toISOString()}>
+                  {new Date(item.updatedAt).toLocaleDateString()}
+                </time>
+              </div>
+            </article>
           ))}
       </div>
     </div>
