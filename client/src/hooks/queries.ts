@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPosts } from "../api/users";
+import { getPostDetails, getPosts } from "../api/users";
 
 export const useFetchPost = () => {
   return useQuery({
@@ -8,6 +8,17 @@ export const useFetchPost = () => {
     placeholderData: [],
     meta: {
       errorMessage: "useFetchPost failed",
+    },
+  });
+};
+
+export const useFetchPostDetails = (postId: number) => {
+  return useQuery({
+    queryKey: ["post", postId],
+    queryFn: () => getPostDetails(postId),
+    enabled: !!postId,
+    meta: {
+      errorMessage: "useFetchPostDetails failed",
     },
   });
 };

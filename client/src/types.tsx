@@ -28,3 +28,34 @@ export type PostWithAuthor = {
 export type PostsResponse = {
   posts: PostWithAuthor[];
 };
+
+export type PostDetails = {
+  id: number;
+  title: string;
+  content: string;
+  published: boolean;
+  createdAt: string;
+  updatedAt: string;
+  authorId: number;
+
+  author: {
+    id: number;
+    name: string | null;
+  };
+
+  comments: {
+    id: number;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+
+    author: {
+      id: number;
+      name: string | null;
+    };
+  }[];
+};
+
+export type PostDetailsResponse = {
+  postDetails: PostDetails;
+};

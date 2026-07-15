@@ -16,7 +16,7 @@ export default function PostList() {
       <div className="post-list-grid">
         {posts &&
           posts.map((item) => (
-            <Link to="/" key={item.id}>
+            <Link to={`/post/${item.id}`} key={item.id}>
               <article className="post-item">
                 <h2 className="post-title">{item.title}</h2>
                 <div className="post-meta">
