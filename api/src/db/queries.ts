@@ -364,9 +364,9 @@ export const updateComment = async (
   }
 };
 
-// function main() {
+// async function main() {
 //   console.log("testing");
-//   createPost("This is content", "Title", 1);
+//   await createUser("test@email.com", "Test User");
 //   console.log("done");
 // }
 
