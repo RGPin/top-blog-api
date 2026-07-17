@@ -1,8 +1,10 @@
 import "./SignupPage.css";
 import { useState } from "react";
 import { useSignUp } from "../../hooks/authQueries";
+import { Link, useNavigate } from "react-router";
 
 export default function SignupPage() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -30,6 +32,7 @@ export default function SignupPage() {
       email: "",
       name: "",
     }));
+    navigate("/login");
   };
 
   // toast for error
@@ -66,6 +69,9 @@ export default function SignupPage() {
             {signupQuery.isPending ? "Loading" : "Sign Up"}
           </button>
         </form>
+        <p>
+          Already have an account? <Link to="/login">Sign In</Link>
+        </p>
       </div>
     </div>
   );
