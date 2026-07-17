@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { useFetchPostDetails } from "../../hooks/queries";
+import { useFetchPostDetails } from "../../hooks/userQueries";
 import PostContentArea from "../../components/PostContentArea/PostContentArea";
 import CommentsArea from "../../components/CommentsArea/CommentsArea";
 
@@ -16,10 +16,7 @@ export default function PostDetails() {
   if (!post) return <h1>Loading post...</h1>;
   return (
     <article className="post-details">
-      {/* Post Content Area */}
       <PostContentArea post={post} />
-
-      {/* Comments Area */}
       <CommentsArea post={post} />
     </article>
   );

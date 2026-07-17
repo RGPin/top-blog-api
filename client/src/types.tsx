@@ -4,6 +4,10 @@ export type User = {
   email: string;
 };
 
+export type SignupResponse = {
+  user: User;
+};
+
 export type Post = {
   id: number;
   authorId: number;

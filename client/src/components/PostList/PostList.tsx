@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { useFetchPost } from "../../hooks/queries";
+import { useFetchPost } from "../../hooks/userQueries";
 import "./PostList.css";
 
 export default function PostList() {

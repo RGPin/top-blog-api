@@ -39,10 +39,7 @@ export const postSignup = asyncHandler(
 
     const createdUser = await db.createUser(email, name);
 
-    res.status(201).json({
-      message: "success",
-      user: createdUser,
-    });
+    res.status(201).json({ user: createdUser });
   },
 );
 
@@ -86,11 +83,7 @@ export const postLogin = asyncHandler(
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.status(200).json({
-      message: "success",
-      accessToken,
-      user,
-    });
+    res.status(200).json({ accessToken });
   },
 );
 
@@ -118,10 +111,7 @@ export const postRefresh = asyncHandler(
       { expiresIn: "15m" },
     );
 
-    res.status(200).json({
-      message: "success",
-      accessToken: newAccessToken,
-    });
+    res.status(200).json({ accessToken: newAccessToken });
   },
 );
 
