@@ -32,7 +32,8 @@
   --radius-md: 24px;
 }
 
-a {
+a,
+button {
   all: unset;
   cursor: pointer;
 }

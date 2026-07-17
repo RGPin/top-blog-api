@@ -1,0 +1,30 @@
+.signup {
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .signup-container {
+    width: clamp(200px, 100%, 500px);
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  button[type="submit"] {
+    border: 1px solid black;
+    text-align: center;
+  }
+}
