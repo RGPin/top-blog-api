@@ -75,3 +75,9 @@ export type Comment = {
     name: string | null;
   };
 };
+
+export type AccessToken = string;
+
+export type LoginRefreshResponse = {
+  accessToken: AccessToken;
+};

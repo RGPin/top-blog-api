@@ -69,11 +69,7 @@ export const postLogin = asyncHandler(
     const refreshToken = generateRefreshToken();
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-    const storedToken = await db.storeRefreshToken(
-      user.id,
-      refreshToken,
-      expiresAt,
-    );
+    await db.storeRefreshToken(user.id, refreshToken, expiresAt);
 
     res.cookie("refresh_token", refreshToken, {
       httpOnly: true,
@@ -96,20 +92,38 @@ export const postRefresh = asyncHandler(
       return;
     }
 
-    const storedToken = await db.findToken(refreshToken);
+    const oldRefreshToken = await db.findToken(refreshToken);
 
-    if (!storedToken || storedToken.expiresAt < new Date()) {
-      if (storedToken) await db.deleteRefreshToken(storedToken.id);
-
+    if (!oldRefreshToken || oldRefreshToken.expiresAt < new Date()) {
+      if (oldRefreshToken) await db.deleteRefreshToken(oldRefreshToken.token);
       res.status(401).json({ message: "Invalid or expired refresh token" });
       return;
     }
 
     const newAccessToken = jwt.sign(
-      { userId: storedToken.userId },
+      { userId: oldRefreshToken.userId },
       process.env.JWT_SECRET as string,
       { expiresIn: "15m" },
     );
+
+    const newRefreshToken = generateRefreshToken();
+    const newExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+    await db.deleteRefreshToken(oldRefreshToken.token);
+
+    await db.storeRefreshToken(
+      oldRefreshToken.userId,
+      newRefreshToken,
+      newExpiresAt,
+    );
+
+    res.cookie("refresh_token", newRefreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/api/auth/refresh",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     res.status(200).json({ accessToken: newAccessToken });
   },

@@ -1,5 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
-import { signupUser } from "../api/auth";
+import {
+  clearAccessToken,
+  loginUser,
+  logoutUser,
+  setTokenOnLogin,
+  signupUser,
+} from "../api/auth";
+
+// useNavigate here?
 
 export const useSignUp = () => {
   return useMutation({
@@ -9,6 +17,33 @@ export const useSignUp = () => {
     },
     onError: (error) => {
       console.error("Signup failed: ", error);
+    },
+  });
+};
+
+export const useLogin = () => {
+  return useMutation({
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      console.log("Login success ", data);
+      setTokenOnLogin(data);
+    },
+    onError: (error) => {
+      console.error("Login failed: ", error);
+    },
+  });
+};
+
+export const useLogout = () => {
+  return useMutation({
+    mutationFn: logoutUser,
+    onSuccess: () => {
+      console.log("Logout success");
+      clearAccessToken();
+    },
+    onError: (error) => {
+      console.error("Logout failed: ", error);
+      clearAccessToken();
     },
   });
 };
