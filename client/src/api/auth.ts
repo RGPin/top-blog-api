@@ -24,6 +24,7 @@ export const signupUser = async (userData: {
 export const loginUser = async (email: string): Promise<AccessToken> => {
   const response = await fetch("/api/auth/login", {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -106,6 +107,7 @@ let refreshPromise: Promise<any> | null = null;
 export const authFetch = async (url: string, options: RequestInit = {}) => {
   let response = await fetch(url, {
     ...options,
+    credentials: "include",
     headers: {
       ...options.headers,
       "Content-Type": "application/json",
@@ -142,6 +144,7 @@ export const authFetch = async (url: string, options: RequestInit = {}) => {
     // Retry original request with new token
     response = await fetch(url, {
       ...options,
+      credentials: "include",
       headers: {
         ...options.headers,
         "Content-Type": "application/json",
