@@ -1,4 +1,6 @@
-import { createPost, publishPost } from "./queries";
+import { createPost, publishPost, createUser } from "./queries";
+
+await createUser("test@user.com", "Test User");
 
 const posts = [
   {
