@@ -100,6 +100,22 @@ export const postRefresh = asyncHandler(
       return;
     }
 
+    if (oldRefreshToken.revokedAt) {
+      await db.revokeAllUserRefreshToken(oldRefreshToken.userId);
+
+      res.clearCookie("refresh_token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/api/auth", // subject to change
+      });
+
+      res.status(401).json({ message: "Suspicious activity detected" });
+      return;
+    }
+
+    await db.revokeRefreshToken(oldRefreshToken.token);
+
     const newAccessToken = jwt.sign(
       { userId: oldRefreshToken.userId },
       process.env.JWT_SECRET as string,

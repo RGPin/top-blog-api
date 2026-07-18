@@ -139,6 +139,40 @@ export const deleteRefreshToken = async (
   }
 };
 
+export const revokeRefreshToken = async (
+  token: string,
+): Promise<RefreshToken> => {
+  try {
+    const revokedToken = await prisma.refreshToken.update({
+      where: { token },
+      data: {
+        revokedAt: new Date(),
+      },
+    });
+    return revokedToken;
+  } catch (error) {
+    console.error("revokeRefreshToken failed: ", { error });
+    throw error;
+  }
+};
+
+export const revokeAllUserRefreshToken = async (
+  userId: number,
+): Promise<RefreshToken[]> => {
+  try {
+    const revokedTokens = await prisma.refreshToken.updateManyAndReturn({
+      where: { userId },
+      data: {
+        revokedAt: new Date(),
+      },
+    });
+    return revokedTokens;
+  } catch (error) {
+    console.error("revokeAllUserRefreshToken failed: ", { error });
+    throw error;
+  }
+};
+
 export const findPost = async (postId: number): Promise<Post | null> => {
   try {
     const post = await prisma.post.findUnique({
