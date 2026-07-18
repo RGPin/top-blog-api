@@ -35,9 +35,10 @@ export default function LoginPage() {
               value={emailInput}
               onChange={(e) => setEmailInput(e.target.value)}
               placeholder="Email"
+              disabled={loginQuery.isPending}
             />
           </div>
-          <button type="submit">
+          <button type="submit" disabled={loginQuery.isPending}>
             {loginQuery.isPending ? "Loading" : "Sign In"}
           </button>
         </form>

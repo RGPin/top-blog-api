@@ -51,6 +51,7 @@ export default function SignupPage() {
               value={formData.email}
               onChange={handleFormInput}
               placeholder="Email"
+              disabled={signupQuery.isPending}
             />
           </div>
 
@@ -63,9 +64,10 @@ export default function SignupPage() {
               value={formData.name}
               onChange={handleFormInput}
               placeholder="Name"
+              disabled={signupQuery.isPending}
             />
           </div>
-          <button type="submit">
+          <button type="submit" disabled={signupQuery.isPending}>
             {signupQuery.isPending ? "Loading" : "Sign Up"}
           </button>
         </form>
