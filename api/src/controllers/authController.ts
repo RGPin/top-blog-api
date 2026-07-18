@@ -75,7 +75,7 @@ export const postLogin = asyncHandler(
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      path: "/api/auth/refresh", // subject to change
+      path: "/api/auth", // subject to change
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -121,7 +121,7 @@ export const postRefresh = asyncHandler(
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      path: "/api/auth/refresh",
+      path: "/api/auth",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -141,7 +141,7 @@ export const deleteLogout = asyncHandler(
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      path: "/api/auth/refresh", // subject to change
+      path: "/api/auth", // subject to change
     });
 
     res.status(200).json({ message: "success" });
