@@ -125,8 +125,6 @@ export const postRefresh = asyncHandler(
     const newRefreshToken = generateRefreshToken();
     const newExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-    await db.deleteRefreshToken(oldRefreshToken.token);
-
     await db.storeRefreshToken(
       oldRefreshToken.userId,
       newRefreshToken,
