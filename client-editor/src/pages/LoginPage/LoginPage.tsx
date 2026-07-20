@@ -15,8 +15,8 @@ export default function LoginPage() {
     if (!email) return;
 
     loginQuery.mutate(email);
+    if (!loginQuery.isSuccess) return;
     setEmailInput("");
-    // on login, redirect to editor client
   };
 
   // toast for error

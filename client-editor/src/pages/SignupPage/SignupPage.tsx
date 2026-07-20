@@ -32,6 +32,7 @@ export default function SignupPage() {
       email: "",
       name: "",
     }));
+    if (!signupQuery.isSuccess) return;
     navigate("/login");
   };
 
