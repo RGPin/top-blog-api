@@ -1,0 +1,39 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 64px;
+
+  --text-xs: 0.75rem; /* 12px - Captions / Small labels */
+  --text-sm: 0.875rem; /* 14px - Secondary body / Table text */
+  --text-base: 1rem; /* 16px - Standard body text */
+  --text-md: 1.25rem; /* 20px - H3 / Subheadings */
+  --text-lg: 1.5rem; /* 24px - H2 / Section titles */
+  --text-xl: 2.25rem; /* 36px - H1 / Page titles */
+
+  --radius-xxs: 6px;
+  --radius-xs: 12px;
+  --radius-sm: 18px;
+  --radius-md: 24px;
+}
+
+a,
+button {
+  all: unset;
+  cursor: pointer;
+}
