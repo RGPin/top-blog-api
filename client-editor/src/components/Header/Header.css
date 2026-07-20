@@ -1,4 +1,9 @@
 .header {
   display: flex;
   justify-content: space-between;
+
+  .actions {
+    display: flex;
+    gap: var(--space-md);
+  }
 }
