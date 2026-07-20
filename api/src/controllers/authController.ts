@@ -60,12 +60,7 @@ export const postLogin = asyncHandler(
       return;
     }
 
-    const accessToken = jwt.sign(
-      { userId: user.id },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "15m" },
-    );
-
+    // create new refresh, store new refresh, only then create access token
     const refreshToken = generateRefreshToken();
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
@@ -78,6 +73,12 @@ export const postLogin = asyncHandler(
       path: "/api/auth", // subject to change
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+
+    const accessToken = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "15m" },
+    );
 
     res.status(200).json({ accessToken });
   },
@@ -120,13 +121,8 @@ export const postRefresh = asyncHandler(
       return;
     }
 
+    // revoke refresh, create new refresh, store new refresh, only then have new access token
     await db.revokeRefreshToken(oldRefreshToken.token);
-
-    const newAccessToken = jwt.sign(
-      { userId: oldRefreshToken.userId },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "15m" },
-    );
 
     const newRefreshToken = generateRefreshToken();
     const newExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
@@ -144,6 +140,12 @@ export const postRefresh = asyncHandler(
       path: "/api/auth",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+
+    const newAccessToken = jwt.sign(
+      { userId: oldRefreshToken.userId },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "15m" },
+    );
 
     res.status(200).json({ accessToken: newAccessToken });
   },
@@ -165,5 +167,86 @@ export const deleteLogout = asyncHandler(
     });
 
     res.status(200).json({ message: "success" });
+  },
+);
+
+// this is same as postRefresh but also returns user
+/* initially, this was supposed to solve the problem of filling the db
+ with revoked refresh tokens by constantly refreshing the browser but...
+ that would mean that in the case where someone somehow managed to
+ steal a refresh token, they have 6 days to freakin play with it
+ so I'll stick with postRefresh and instead learn about rate limiting 
+ or find other solutions*/
+export const getMe = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const refreshToken = req.cookies.refresh_token;
+
+    if (!refreshToken) {
+      res.status(401).json({ message: "Not authenticated" });
+      return;
+    }
+
+    const refreshTokenRecord = await db.findToken(refreshToken);
+
+    if (!refreshTokenRecord || refreshTokenRecord.expiresAt < new Date()) {
+      if (refreshTokenRecord) {
+        await db.deleteRefreshToken(refreshTokenRecord.token);
+      }
+      res.clearCookie("refresh_token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/api/auth", // subject to change
+      });
+      res.status(401).json({ message: "Invalid or expired refresh token" });
+      return;
+    }
+
+    if (refreshTokenRecord.revokedAt) {
+      await db.revokeAllUserRefreshToken(refreshTokenRecord.userId);
+      res.clearCookie("refresh_token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/api/auth", // subject to change
+      });
+
+      res.status(401).json({ message: "Suspicious activity detected" });
+      return;
+    }
+
+    const oneDayLater = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    if (refreshTokenRecord.expiresAt < oneDayLater) {
+      await db.revokeRefreshToken(refreshTokenRecord.token);
+      const newRefreshToken = generateRefreshToken();
+      const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+      await db.storeRefreshToken(
+        refreshTokenRecord.userId,
+        newRefreshToken,
+        expiresAt,
+      );
+
+      res.cookie("refresh_token", newRefreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/api/auth",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+    }
+
+    const newAccessToken = jwt.sign(
+      { userId: refreshTokenRecord.userId },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "15m" },
+    );
+
+    const user = await db.findUserById(refreshTokenRecord.userId);
+
+    res.status(200).json({
+      user,
+      accessToken: newAccessToken,
+    });
   },
 );
