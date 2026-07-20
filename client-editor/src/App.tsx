@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Outlet, Route, Routes } from "react-router";
 import "./App.css";
 import Header from "./components/Header/Header";
 import LoginPage from "./pages/LoginPage/LoginPage";

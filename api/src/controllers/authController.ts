@@ -56,7 +56,7 @@ export const postLogin = asyncHandler(
     const user = await db.findUserByEmail(email);
 
     if (!user) {
-      res.status(400).json({ message: "Invalid email" });
+      res.status(401).json({ message: "Unauthorized" });
       return;
     }
 
@@ -96,6 +96,12 @@ export const postRefresh = asyncHandler(
 
     if (!oldRefreshToken || oldRefreshToken.expiresAt < new Date()) {
       if (oldRefreshToken) await db.deleteRefreshToken(oldRefreshToken.token);
+      res.clearCookie("refresh_token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/api/auth", // subject to change
+      });
       res.status(401).json({ message: "Invalid or expired refresh token" });
       return;
     }
