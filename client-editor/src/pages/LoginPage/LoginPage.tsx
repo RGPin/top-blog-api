@@ -1,10 +1,9 @@
 import "./LoginPage.css";
 import { useState } from "react";
 import { useLogin } from "../../hooks/authQueries";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 
 export default function LoginPage() {
-  const navigate = useNavigate();
   const [emailInput, setEmailInput] = useState("");
 
   const loginQuery = useLogin();

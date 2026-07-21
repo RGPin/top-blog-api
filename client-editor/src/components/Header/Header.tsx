@@ -1,13 +1,11 @@
 import { useLogout } from "../../hooks/authQueries";
 import { useAuthStore } from "../../store/useAuthStore";
 import "./Header.css";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 
 export default function Header() {
   const { accessToken } = useAuthStore();
   const isAuthenticated = accessToken !== null;
-
-  const navigate = useNavigate();
 
   const logoutQuery = useLogout();
 
