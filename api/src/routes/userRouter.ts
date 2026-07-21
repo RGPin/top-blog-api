@@ -8,8 +8,8 @@ router.get("/posts", controller.getPosts);
 router.get("/posts/:postId", controller.getPostDetails);
 
 router.use(protectRoute);
-router.post("/posts/comments/:postId", controller.postCreateComment);
-router.put("/posts/comments/:commentId", controller.putEditComment);
-router.delete("/comments/:commentId", controller.deleteComment);
+router.post("/comments/add/:postId", controller.postCreateComment);
+router.put("/comments/edit/:commentId", controller.putEditComment);
+router.delete("/comments/delete/:commentId", controller.deleteComment);
 
 export default router;

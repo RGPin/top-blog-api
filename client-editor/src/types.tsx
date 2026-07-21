@@ -64,6 +64,18 @@ export type PostDetailsResponse = {
   postDetails: PostDetails;
 };
 
+export type AddCommentResponse = {
+  createdComment: Comment;
+};
+
+export type EditCommentResponse = {
+  editedComment: Comment;
+};
+
+export type DeleteCommentResponse = {
+  deletedComment: Comment;
+};
+
 export type Comment = {
   id: number;
   content: string;
