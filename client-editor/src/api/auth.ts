@@ -110,7 +110,6 @@ export const authFetch = async (url: string, options: RequestInit = {}) => {
     credentials: "include",
     headers: {
       ...options.headers,
-      "Content-Type": "application/json",
       ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
     },
   });
@@ -147,7 +146,6 @@ export const authFetch = async (url: string, options: RequestInit = {}) => {
       credentials: "include",
       headers: {
         ...options.headers,
-        "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
     });
