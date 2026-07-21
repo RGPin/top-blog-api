@@ -43,6 +43,13 @@ export const postSignup = asyncHandler(
   },
 );
 
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict" as const,
+  path: "/api/auth", // subject to change
+};
+
 export const postLogin = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const body = req.body as LoginBody;
@@ -67,10 +74,7 @@ export const postLogin = asyncHandler(
     await db.storeRefreshToken(user.id, refreshToken, expiresAt);
 
     res.cookie("refresh_token", refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      path: "/api/auth", // subject to change
+      ...cookieOptions,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -97,25 +101,25 @@ export const postRefresh = asyncHandler(
 
     if (!oldRefreshToken || oldRefreshToken.expiresAt < new Date()) {
       if (oldRefreshToken) await db.deleteRefreshToken(oldRefreshToken.token);
-      res.clearCookie("refresh_token", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        path: "/api/auth", // subject to change
-      });
+      res.clearCookie("refresh_token", cookieOptions);
       res.status(401).json({ message: "Invalid or expired refresh token" });
       return;
     }
 
     if (oldRefreshToken.revokedAt) {
+      // Add grace time. Too strict
+      const revokedSecondsAgo =
+        (Date.now() - oldRefreshToken.revokedAt.getTime()) / 1000;
+      if (revokedSecondsAgo < 10) {
+        // Likely a race, return 401 but don't revoke all
+        res.status(401).json({ message: "Token already rotated" });
+        return;
+      }
+
+      // nuke em all!
       await db.revokeAllUserRefreshToken(oldRefreshToken.userId);
 
-      res.clearCookie("refresh_token", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        path: "/api/auth", // subject to change
-      });
+      res.clearCookie("refresh_token", cookieOptions);
 
       res.status(401).json({ message: "Suspicious activity detected" });
       return;
@@ -134,10 +138,7 @@ export const postRefresh = asyncHandler(
     );
 
     res.cookie("refresh_token", newRefreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      path: "/api/auth",
+      ...cookieOptions,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -159,12 +160,7 @@ export const deleteLogout = asyncHandler(
       await db.deleteRefreshToken(refreshToken);
     }
 
-    res.clearCookie("refresh_token", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      path: "/api/auth", // subject to change
-    });
+    res.clearCookie("refresh_token", cookieOptions);
 
     res.status(200).json({ message: "success" });
   },
