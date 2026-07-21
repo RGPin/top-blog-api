@@ -1,9 +1,11 @@
+import { useAuthStore } from "../store/useAuthStore";
 import type {
   AccessToken,
   LoginRefreshResponse,
   SignupResponse,
   User,
 } from "../types";
+import { refreshToken } from "./refreshToken";
 
 export const signupUser = async (userData: {
   email: string;
@@ -35,20 +37,17 @@ export const loginUser = async (email: string): Promise<AccessToken> => {
   return data.accessToken;
 };
 
-// for refresh token
-let accessToken: string | null = null;
-
 export const clearAccessToken = () => {
-  accessToken = null;
+  useAuthStore.getState().clearToken();
 };
 
 export const setTokenOnLogin = (token: AccessToken) => {
-  accessToken = token;
+  useAuthStore.getState().setToken(token);
 };
 
 // preventing naughty strict mode from calling authFetch multiple times
-let isRefreshing = false;
-let refreshPromise: Promise<any> | null = null;
+// let isRefreshing = false;
+// let refreshPromise: Promise<any> | null = null;
 
 // export const authFetch = async (url: string, options: RequestInit = {}) => {
 //   //first try
@@ -105,6 +104,7 @@ let refreshPromise: Promise<any> | null = null;
 // };
 
 export const authFetch = async (url: string, options: RequestInit = {}) => {
+  const accessToken = useAuthStore.getState().accessToken;
   let response = await fetch(url, {
     ...options,
     credentials: "include",
@@ -120,25 +120,9 @@ export const authFetch = async (url: string, options: RequestInit = {}) => {
   }
 
   try {
-    if (isRefreshing && refreshPromise) {
-      await refreshPromise;
-    } else {
-      isRefreshing = true;
-      refreshPromise = fetch("/api/auth/refresh", {
-        method: "POST",
-        credentials: "include",
-      })
-        .then(async (res) => {
-          if (!res.ok) throw new Error("Refresh failed");
-          const data = await res.json();
-          accessToken = data.accessToken;
-        })
-        .finally(() => {
-          isRefreshing = false;
-          refreshPromise = null;
-        });
-      await refreshPromise;
-    }
+    await refreshToken();
+
+    const accessToken = useAuthStore.getState().accessToken;
 
     // Retry original request with new token
     response = await fetch(url, {
@@ -146,7 +130,7 @@ export const authFetch = async (url: string, options: RequestInit = {}) => {
       credentials: "include",
       headers: {
         ...options.headers,
-        Authorization: `Bearer ${accessToken}`,
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
       },
     });
   } catch (error) {
