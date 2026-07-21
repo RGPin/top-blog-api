@@ -3,7 +3,8 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import MainPage from "./pages/MainPage/MainPage";
 import PostDetails from "./pages/PostDetails/PostDetails";
 import SignupPage from "./pages/SignupPage/SignupPage";
-import App, { authLoader } from "./App";
+import { authLoader } from "./authLoader";
+import App from "./App";
 
 export const router = createBrowserRouter([
   {
