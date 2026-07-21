@@ -11,7 +11,7 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { router } from "./routes.tsx";
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error, query) => {
       if (query.meta?.errorMessage) {

@@ -1,4 +1,4 @@
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import {
   clearAccessToken,
   loginUser,
@@ -7,8 +7,7 @@ import {
   signupUser,
 } from "../api/auth";
 import { useNavigate } from "react-router";
-
-const navigate = useNavigate();
+import { queryClient } from "../main";
 
 export const useSignUp = () => {
   return useMutation({
@@ -23,6 +22,7 @@ export const useSignUp = () => {
 };
 
 export const useLogin = () => {
+  const navigate = useNavigate();
   return useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
@@ -37,7 +37,8 @@ export const useLogin = () => {
 };
 
 export const useLogout = () => {
-  const queryClient = new QueryClient();
+  const navigate = useNavigate();
+
   return useMutation({
     mutationFn: logoutUser,
     onSuccess: () => {
