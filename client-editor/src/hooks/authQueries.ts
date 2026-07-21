@@ -7,7 +7,7 @@ import {
   signupUser,
 } from "../api/auth";
 import { useNavigate } from "react-router";
-import { queryClient } from "../main";
+import { queryClient } from "../queryClient";
 
 export const useSignUp = () => {
   return useMutation({
