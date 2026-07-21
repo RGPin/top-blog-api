@@ -12,9 +12,7 @@ export default function Header() {
   const logoutQuery = useLogout();
 
   const handleLogout = () => {
-    logoutQuery.mutate(undefined, {
-      onSuccess: () => navigate("/login"),
-    });
+    logoutQuery.mutate();
   };
 
   return (

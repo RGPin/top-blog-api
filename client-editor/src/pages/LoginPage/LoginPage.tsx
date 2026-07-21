@@ -15,9 +15,7 @@ export default function LoginPage() {
     const email = emailInput.trim();
     if (!email) return;
 
-    loginQuery.mutate(email, {
-      onSuccess: () => navigate("/"),
-    });
+    loginQuery.mutate(email);
   };
 
   // toast for error

@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { QueryClient, useMutation } from "@tanstack/react-query";
 import {
   clearAccessToken,
   loginUser,
@@ -6,8 +6,9 @@ import {
   setTokenOnLogin,
   signupUser,
 } from "../api/auth";
+import { useNavigate } from "react-router";
 
-// useNavigate here?
+const navigate = useNavigate();
 
 export const useSignUp = () => {
   return useMutation({
@@ -27,6 +28,7 @@ export const useLogin = () => {
     onSuccess: (data) => {
       console.log("Login success ", data);
       setTokenOnLogin(data);
+      navigate("/");
     },
     onError: (error) => {
       console.error("Login failed: ", error);
@@ -35,6 +37,7 @@ export const useLogin = () => {
 };
 
 export const useLogout = () => {
+  const queryClient = new QueryClient();
   return useMutation({
     mutationFn: logoutUser,
     onSuccess: () => {
@@ -45,6 +48,8 @@ export const useLogout = () => {
     },
     onSettled: () => {
       clearAccessToken();
+      navigate("/login");
+      queryClient.clear();
     },
   });
 };
