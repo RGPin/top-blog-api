@@ -17,6 +17,7 @@ export const refreshToken = async () => {
         throw new Error();
       }
       const data = await res.json();
+      if (!data.accessToken) throw new Error("Missing Access Token");
       useAuthStore.getState().setToken(data.accessToken);
     })
     .finally(() => {

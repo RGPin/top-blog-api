@@ -1,3 +1,4 @@
+import { SessionExpiredError } from "../errors";
 import { useAuthStore } from "../store/useAuthStore";
 import type {
   AccessToken,
@@ -135,11 +136,17 @@ export const authFetch = async (url: string, options: RequestInit = {}) => {
     });
   } catch (error) {
     clearAccessToken();
-    throw new Error("SESSION_EXPIRED"); // check if error.message is this then navigate to logout
+    throw new SessionExpiredError(); // check if error instanceof SessionExpiredError
   }
 
   if (!response.ok) throw new Error(response.statusText);
-  return response.json();
+
+  const contentType = response.headers.get("Content-Type");
+  if (contentType?.includes("application/json")) {
+    return response.json();
+  }
+
+  return response.text();
 };
 
 // logout
