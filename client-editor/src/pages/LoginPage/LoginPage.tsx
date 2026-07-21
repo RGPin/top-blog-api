@@ -1,9 +1,10 @@
 import "./LoginPage.css";
 import { useState } from "react";
 import { useLogin } from "../../hooks/authQueries";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [emailInput, setEmailInput] = useState("");
 
   const loginQuery = useLogin();
@@ -14,9 +15,9 @@ export default function LoginPage() {
     const email = emailInput.trim();
     if (!email) return;
 
-    loginQuery.mutate(email);
-    if (!loginQuery.isSuccess) return;
-    setEmailInput("");
+    loginQuery.mutate(email, {
+      onSuccess: () => navigate("/"),
+    });
   };
 
   // toast for error

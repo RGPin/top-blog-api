@@ -156,9 +156,9 @@ export const authFetch = async (url: string, options: RequestInit = {}) => {
 // logout
 export const logoutUser = async (): Promise<void> => {
   const response = await fetch("/api/auth/logout", {
-    method: "POST",
+    method: "DELETE",
     credentials: "include",
   });
-  clearAccessToken();
+
   if (!response.ok) throw new Error(response.statusText);
 };

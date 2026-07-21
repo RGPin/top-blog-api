@@ -39,10 +39,11 @@ export const useLogout = () => {
     mutationFn: logoutUser,
     onSuccess: () => {
       console.log("Logout success");
-      clearAccessToken();
     },
     onError: (error) => {
       console.error("Logout failed: ", error);
+    },
+    onSettled: () => {
       clearAccessToken();
     },
   });
