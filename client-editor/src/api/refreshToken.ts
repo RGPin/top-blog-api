@@ -14,7 +14,7 @@ export const refreshToken = async () => {
     .then(async (res) => {
       if (!res.ok) {
         useAuthStore.getState().clearToken();
-        throw new Error();
+        throw new Error("REFRESH_FAILED");
       }
       const data = await res.json();
       if (!data.accessToken) throw new Error("Missing Access Token");

@@ -134,6 +134,10 @@ export const authFetch = async (url: string, options: RequestInit = {}) => {
         ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
       },
     });
+
+    if (response.status === 401) {
+      throw new SessionExpiredError();
+    }
   } catch (error) {
     clearAccessToken();
     throw new SessionExpiredError(); // check if error instanceof SessionExpiredError
