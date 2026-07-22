@@ -2,8 +2,7 @@ import "./Header.css";
 import { Link } from "react-router";
 
 export default function Header() {
-  const editorUrl =
-    import.meta.env.VITE_EDITOR_URL || "http://localhost:3000/login";
+  const editorUrl = import.meta.env.VITE_EDITOR_URL || "http://localhost:3000/";
   return (
     <header className="header">
       <h1>Blog API</h1>
