@@ -30,7 +30,7 @@ export const addComment = async (commentData: {
   postId: number;
   content: string;
 }): Promise<Comment> => {
-  const response = await authFetch(
+  const data: AddCommentResponse = await authFetch(
     `/api/user/comments/add/${commentData.postId}`,
     {
       method: "POST",
@@ -40,7 +40,6 @@ export const addComment = async (commentData: {
       body: JSON.stringify({ content: commentData.content }),
     },
   );
-  const data: AddCommentResponse = await response.json();
   return data.createdComment;
 };
 
