@@ -26,32 +26,38 @@ export const getPostDetails = async (postId: number): Promise<PostDetails> => {
   return data.postDetails;
 };
 
-export const addComment = async (
-  postId: number,
-  commentContent: string,
-): Promise<Comment> => {
-  const response = await authFetch(`/api/user/comments/add/${postId}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+export const addComment = async (commentData: {
+  postId: number;
+  content: string;
+}): Promise<Comment> => {
+  const response = await authFetch(
+    `/api/user/comments/add/${commentData.postId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ content: commentData.content }),
     },
-    body: JSON.stringify({ content: commentContent }),
-  });
+  );
   const data: AddCommentResponse = await response.json();
   return data.createdComment;
 };
 
-export const editComment = async (
-  commentId: number,
-  commentContent: string,
-): Promise<Comment> => {
-  const response = await authFetch(`/api/user/comments/edit/${commentId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
+export const editComment = async (commentData: {
+  id: number;
+  content: string;
+}): Promise<Comment> => {
+  const response = await authFetch(
+    `/api/user/comments/edit/${commentData.id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ content: commentData.content }),
     },
-    body: JSON.stringify({ content: commentContent }),
-  });
+  );
   const data: EditCommentResponse = await response.json();
   return data.editedComment;
 };
