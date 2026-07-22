@@ -47,7 +47,7 @@ export const editComment = async (commentData: {
   id: number;
   content: string;
 }): Promise<Comment> => {
-  const response = await authFetch(
+  const data: EditCommentResponse = await authFetch(
     `/api/user/comments/edit/${commentData.id}`,
     {
       method: "PUT",
@@ -57,14 +57,15 @@ export const editComment = async (commentData: {
       body: JSON.stringify({ content: commentData.content }),
     },
   );
-  const data: EditCommentResponse = await response.json();
   return data.editedComment;
 };
 
 export const deleteComment = async (commentId: number): Promise<Comment> => {
-  const response = await authFetch(`/api/user/comments/delete/${commentId}`, {
-    method: "DELETE",
-  });
-  const data: DeleteCommentResponse = await response.json();
+  const data: DeleteCommentResponse = await authFetch(
+    `/api/user/comments/delete/${commentId}`,
+    {
+      method: "DELETE",
+    },
+  );
   return data.deletedComment;
 };
