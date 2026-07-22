@@ -5,6 +5,7 @@ import PostDetails from "./pages/PostDetails/PostDetails";
 import SignupPage from "./pages/SignupPage/SignupPage";
 import { authLoader } from "./authLoader";
 import App from "./App";
+import UserPostPage from "./pages/UserPostPage/UserPostPage";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
           {
             path: "/post/:postId",
             element: <PostDetails />,
+          },
+          {
+            path: "/my-posts",
+            element: <UserPostPage />,
           },
         ],
       },

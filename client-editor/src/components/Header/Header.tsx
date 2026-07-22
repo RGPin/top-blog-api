@@ -19,6 +19,7 @@ export default function Header() {
       {isAuthenticated ? (
         <div className="actions">
           <Link to={"/"}>Home</Link>
+          <Link to={"/my-posts"}>Posts</Link>
           <button onClick={handleLogout}>Logout</button>
         </div>
       ) : (
