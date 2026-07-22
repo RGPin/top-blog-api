@@ -9,10 +9,12 @@ type PostProps = {
 export default function CommentsArea({ post }: PostProps) {
   const [input, setInput] = useState("");
 
-  const addCommentQuery = useAddComment();
+  const addCommentQuery = useAddComment(post.id);
 
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
+    const comment = input.trim();
+    if (!comment) return;
     addCommentQuery.mutate({ postId: post.id, content: input });
     setInput("");
   };

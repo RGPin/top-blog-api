@@ -6,6 +6,7 @@ import {
   getPostDetails,
   getPosts,
 } from "../api/users";
+import { queryClient } from "../queryClient";
 
 export const useFetchPost = () => {
   return useQuery({
@@ -29,16 +30,19 @@ export const useFetchPostDetails = (postId: number) => {
   });
 };
 
-export const useAddComment = () => {
+export const useAddComment = (postId: number) => {
   return useMutation({
     mutationFn: addComment,
     onSuccess: (data) => {
       console.log("Comment added: ", data);
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["post", postId] });
+    },
   });
 };
 
-export const useEditComment = () => {
+export const useEditComment = (postId: number) => {
   return useMutation({
     mutationFn: editComment,
     onSuccess: (data) => {
@@ -47,7 +51,7 @@ export const useEditComment = () => {
   });
 };
 
-export const useDeleteComment = () => {
+export const useDeleteComment = (postId: number) => {
   return useMutation({
     mutationFn: deleteComment,
     onSuccess: (data) => {
