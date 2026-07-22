@@ -48,6 +48,9 @@ export const useEditComment = (postId: number) => {
     onSuccess: (data) => {
       console.log("Comment edited: ", data);
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["post", postId] });
+    },
   });
 };
 
