@@ -28,7 +28,7 @@ export default function CommentsArea({ post }: PostProps) {
           </h3>
           <ul className="comments-list">
             {post.comments.map((comment) => (
-              <Comment key={comment.id} comment={comment} />
+              <Comment key={comment.id} comment={comment} postId={post.id} />
             ))}
           </ul>
         </section>

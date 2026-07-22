@@ -1,12 +1,20 @@
+import { useDeleteComment } from "../../hooks/userQueries";
 import { useTokenPayload } from "../../hooks/useTokenPayload";
 import type { Comment } from "../../types";
 
 type CommentProps = {
   comment: Comment;
+  postId: number;
 };
 
-export default function Comment({ comment }: CommentProps) {
+export default function Comment({ comment, postId }: CommentProps) {
   const userId = useTokenPayload()?.userId;
+
+  const deleteCommentQuery = useDeleteComment(postId);
+
+  const handleDelete = (commentId: number) => {
+    deleteCommentQuery.mutate(commentId);
+  };
 
   return (
     <li className="comment-item">
@@ -18,7 +26,7 @@ export default function Comment({ comment }: CommentProps) {
       </blockquote>
       {userId === comment.author.id && (
         <div className="actions">
-          <button>Delete</button>
+          <button onClick={() => handleDelete(comment.id)}>Delete</button>
           <button>Edit</button>
         </div>
       )}

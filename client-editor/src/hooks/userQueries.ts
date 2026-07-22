@@ -57,5 +57,8 @@ export const useDeleteComment = (postId: number) => {
     onSuccess: (data) => {
       console.log("Comment deleted: ", data);
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["post", postId] });
+    },
   });
 };
