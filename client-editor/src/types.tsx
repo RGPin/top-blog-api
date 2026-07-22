@@ -93,3 +93,7 @@ export type AccessToken = string;
 export type LoginRefreshResponse = {
   accessToken: AccessToken;
 };
+
+export type TokenPayload = {
+  userId: number;
+};
