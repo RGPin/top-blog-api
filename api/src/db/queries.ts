@@ -241,12 +241,20 @@ export const updatePost = async (
 export const retrieveAuthorPosts = async (
   authorId: number,
   publishedFilter?: boolean,
-): Promise<Post[]> => {
+): Promise<PostsWithAuthors[]> => {
   try {
     const authorPosts = await prisma.post.findMany({
       where: {
         authorId,
         ...(publishedFilter !== undefined && { published: publishedFilter }),
+      },
+      include: {
+        author: {
+          select: { name: true },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
     return authorPosts;

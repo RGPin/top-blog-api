@@ -1,3 +1,4 @@
+import PostList from "../../components/PostList/PostList";
 import { useFetchAuthorPosts } from "../../hooks/editorQueries";
 
 export default function UserPostPage() {
@@ -8,6 +9,7 @@ export default function UserPostPage() {
   return (
     <div>
       <h1>User Posts</h1>
+      <PostList editorMode={true} />
     </div>
   );
 }
