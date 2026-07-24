@@ -13,6 +13,14 @@ type DeleteResponse = {
   deletedPost: Post;
 };
 
+type PublishedResponse = {
+  publishedPost: Post;
+};
+
+type UnpublishedResponse = {
+  unpublishedPost: Post;
+};
+
 export const getUserPosts = async (
   signal: AbortSignal,
 ): Promise<PostWithAuthor[]> => {
@@ -54,4 +62,23 @@ export const deleteUserPost = async (deleteData: {
     },
   );
   return data.deletedPost;
+};
+
+export const togglePublishPost = async (publishData: {
+  postId: number;
+  isPublished: boolean;
+}): Promise<Post> => {
+  if (publishData.isPublished) {
+    const data: UnpublishedResponse = await authFetch(
+      `/api/editor/posts/unpublish/${publishData.postId}`,
+      { method: "POST" },
+    );
+    return data.unpublishedPost;
+  }
+
+  const data: PublishedResponse = await authFetch(
+    `/api/editor/posts/publish/${publishData.postId}`,
+    { method: "POST" },
+  );
+  return data.publishedPost;
 };

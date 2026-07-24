@@ -1,7 +1,10 @@
 import { Link } from "react-router";
 import { useFetchPost } from "../../hooks/userQueries";
 import "./PostList.css";
-import { useFetchAuthorPosts } from "../../hooks/editorQueries";
+import {
+  useFetchAuthorPosts,
+  useTogglePublish,
+} from "../../hooks/editorQueries";
 import { useState } from "react";
 
 type PostListProps = {
@@ -10,6 +13,7 @@ type PostListProps = {
 
 export default function PostList({ editorMode }: PostListProps) {
   const postsQuery = editorMode ? useFetchAuthorPosts() : useFetchPost();
+  const publishMutation = useTogglePublish();
 
   const posts = postsQuery.data;
 
@@ -18,7 +22,7 @@ export default function PostList({ editorMode }: PostListProps) {
   const [contentInput, setContentInput] = useState("");
 
   const handlePublishPost = (postId: number, isPublished: boolean) => {
-    console.log(postId, isPublished);
+    publishMutation.mutate({ postId, isPublished });
   };
 
   const handleSubmitCreate = (e: React.SubmitEvent) => {
@@ -70,33 +74,35 @@ export default function PostList({ editorMode }: PostListProps) {
         )}
       </div>
       <div className="post-list-grid">
-        {posts?.map(({ id, title, author, updatedAt, published }) => (
-          <article className="post-item" key={id}>
-            <header className="post-header">
-              <h2 className="post-title">
-                <Link
-                  to={editorMode ? `/my-posts/details/${id}` : `/post/${id}`}
-                  className="post-link"
-                  state={editorMode ? { editorMode } : undefined}
-                >
-                  {title}
-                </Link>
-              </h2>
-            </header>
+        {posts
+          ?.filter((post) => editorMode || post.published)
+          .map(({ id, title, author, updatedAt, published }) => (
+            <article className="post-item" key={id}>
+              <header className="post-header">
+                <h2 className="post-title">
+                  <Link
+                    to={editorMode ? `/my-posts/details/${id}` : `/post/${id}`}
+                    className="post-link"
+                    state={editorMode ? { editorMode } : undefined}
+                  >
+                    {title}
+                  </Link>
+                </h2>
+              </header>
 
-            <footer className="post-meta">
-              <span className="post-author">By {author.name}</span>
-              {editorMode && (
-                <button onClick={() => handlePublishPost(id, published)}>
-                  {published ? "Unpublish Post" : "Publish Post"}
-                </button>
-              )}
-              <time dateTime={new Date(updatedAt).toISOString()}>
-                {new Date(updatedAt).toLocaleDateString()}
-              </time>
-            </footer>
-          </article>
-        ))}
+              <footer className="post-meta">
+                <span className="post-author">By {author.name}</span>
+                {editorMode && (
+                  <button onClick={() => handlePublishPost(id, published)}>
+                    {published ? "Unpublish Post" : "Publish Post"}
+                  </button>
+                )}
+                <time dateTime={new Date(updatedAt).toISOString()}>
+                  {new Date(updatedAt).toLocaleDateString()}
+                </time>
+              </footer>
+            </article>
+          ))}
       </div>
     </div>
   );

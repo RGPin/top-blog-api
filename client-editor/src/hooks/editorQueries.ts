@@ -1,5 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { deleteUserPost, editUserPost, getUserPosts } from "../api/editor";
+import {
+  deleteUserPost,
+  editUserPost,
+  getUserPosts,
+  togglePublishPost,
+} from "../api/editor";
 import { queryClient } from "../queryClient";
 
 export const useFetchAuthorPosts = () => {
@@ -33,6 +38,19 @@ export const useDeleteAuthorPost = (postId: number) => {
     },
     onSettled: () => {
       queryClient.removeQueries({ queryKey: ["post", postId] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["user-posts"] });
+    },
+  });
+};
+
+export const useTogglePublish = () => {
+  return useMutation({
+    mutationFn: togglePublishPost,
+    onSuccess: () => {
+      console.log("Toggle publish success");
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       queryClient.invalidateQueries({ queryKey: ["user-posts"] });
     },
