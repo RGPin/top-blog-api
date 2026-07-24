@@ -38,7 +38,10 @@ export const useEditAuthorPost = (postId: number) => {
       console.log("Edit success");
     },
     onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["user-posts"] });
       queryClient.invalidateQueries({ queryKey: ["post", postId] });
+      queryClient.invalidateQueries({ queryKey: ["user-post", postId] });
     },
   });
 };

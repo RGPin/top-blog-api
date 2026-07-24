@@ -38,6 +38,7 @@ export const useAddComment = (postId: number) => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["post", postId] });
+      queryClient.invalidateQueries({ queryKey: ["user-post", postId] });
     },
   });
 };
@@ -50,6 +51,7 @@ export const useEditComment = (postId: number) => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["post", postId] });
+      queryClient.invalidateQueries({ queryKey: ["user-post", postId] });
     },
   });
 };
@@ -62,6 +64,7 @@ export const useDeleteComment = (postId: number) => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["post", postId] });
+      queryClient.invalidateQueries({ queryKey: ["user-post", postId] });
     },
   });
 };
