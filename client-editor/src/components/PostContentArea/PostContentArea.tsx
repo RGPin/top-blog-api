@@ -1,16 +1,21 @@
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import type { PostDetails } from "../../types";
 import PostContent from "../PostContent/PostContent";
 import { useState } from "react";
-import { useEditAuthorPost } from "../../hooks/editorQueries";
+import {
+  useDeleteAuthorPost,
+  useEditAuthorPost,
+} from "../../hooks/editorQueries";
 
 type PostProps = {
   post: PostDetails;
 };
 export default function PostContentArea({ post }: PostProps) {
   const { editorMode } = useLocation().state || {};
+  const navigate = useNavigate();
 
   const editMutation = useEditAuthorPost(post.id);
+  const deleteMutation = useDeleteAuthorPost(post.id);
 
   const [isEditing, setIsEditing] = useState(false);
   const [titleInput, setTitleInput] = useState(post.title);
@@ -29,8 +34,17 @@ export default function PostContentArea({ post }: PostProps) {
     const content = contentInput.trim();
     if (!title && !content) return;
 
-    editMutation.mutateAsync({ postId: post.id, title, content });
+    editMutation.mutate({ postId: post.id, title, content });
     setIsEditing(false);
+  };
+
+  const handleDeletePost = () => {
+    const deleteConfirmed = confirm(
+      "Are you sure you want to delete this post?",
+    );
+    if (!deleteConfirmed) return;
+    deleteMutation.mutate({ postId: post.id });
+    navigate("/my-posts");
   };
 
   return (
@@ -67,7 +81,7 @@ export default function PostContentArea({ post }: PostProps) {
       {!isEditing && (
         <div className="actions">
           <button onClick={() => setIsEditing(true)}>Edit Post</button>
-          <button>Delete Post</button>
+          <button onClick={handleDeletePost}>Delete Post</button>
         </div>
       )}
     </>

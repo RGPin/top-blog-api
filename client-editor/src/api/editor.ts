@@ -1,4 +1,4 @@
-import type { PostWithAuthor } from "../types";
+import type { Post, PostWithAuthor } from "../types";
 import { authFetch } from "./auth";
 
 type PostsResponse = {
@@ -7,6 +7,10 @@ type PostsResponse = {
 
 type EditResponse = {
   editedPost: PostWithAuthor;
+};
+
+type DeleteResponse = {
+  deletedPost: Post;
 };
 
 export const getUserPosts = async (
@@ -38,4 +42,16 @@ export const editUserPost = async (editData: {
     },
   );
   return data.editedPost;
+};
+
+export const deleteUserPost = async (deleteData: {
+  postId: number;
+}): Promise<Post> => {
+  const data: DeleteResponse = await authFetch(
+    `/api/editor/posts/delete/${deleteData.postId}`,
+    {
+      method: "DELETE",
+    },
+  );
+  return data.deletedPost;
 };
