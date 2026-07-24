@@ -78,7 +78,7 @@ export default function PostContentArea({ post }: PostProps) {
         </form>
       )}
       {!isEditing && <PostContent post={post} />}
-      {!isEditing && (
+      {!isEditing && editorMode && (
         <div className="actions">
           <button onClick={() => setIsEditing(true)}>Edit Post</button>
           <button onClick={handleDeletePost}>Delete Post</button>
