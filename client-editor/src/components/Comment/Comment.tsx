@@ -12,7 +12,7 @@ export default function Comment({ comment, postId }: CommentProps) {
   const userId = useTokenPayload()?.userId;
 
   const [isEditing, setIsEditing] = useState<number | null>();
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(comment.content);
 
   const deleteCommentQuery = useDeleteComment(postId);
   const editCommentQuery = useEditComment(postId);
@@ -35,17 +35,11 @@ export default function Comment({ comment, postId }: CommentProps) {
 
   const handleCancelEdit = () => {
     setIsEditing(null);
-    setInput("");
+    setInput(comment.content);
   };
 
   return (
     <li className="comment-item">
-      {/* <blockquote className="comment-body">
-        <p className="comment-content">{comment.content}</p>
-        <cite className="comment-author">
-          — {comment.author.name || "Anonymous"}
-        </cite>
-      </blockquote> */}
       {isEditing === comment.id ? (
         <form>
           <label style={{ display: "none" }} htmlFor="edit-comment">

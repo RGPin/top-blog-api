@@ -2,11 +2,14 @@ import { useState } from "react";
 import type { PostDetails } from "../../types";
 import Comment from "../Comment/Comment";
 import { useAddComment } from "../../hooks/userQueries";
+import { useLocation } from "react-router";
 
 type PostProps = {
   post: PostDetails;
 };
 export default function CommentsArea({ post }: PostProps) {
+  const { editorMode } = useLocation().state || {};
+
   const [input, setInput] = useState("");
 
   const addCommentQuery = useAddComment(post.id);
@@ -43,22 +46,24 @@ export default function CommentsArea({ post }: PostProps) {
           </p>
         </section>
       )}
-      <form onSubmit={handleSubmit}>
-        <label style={{ display: "none" }} htmlFor="comment">
-          Add Comment
-        </label>
-        <input
-          type="text"
-          id="comment"
-          name="comment"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          disabled={addCommentQuery.isPending}
-        />
-        <button type="submit" disabled={addCommentQuery.isPending}>
-          {addCommentQuery.isPending ? "Loading" : "Add Comment"}
-        </button>
-      </form>
+      {!editorMode && (
+        <form onSubmit={handleSubmit}>
+          <label style={{ display: "none" }} htmlFor="comment">
+            Add Comment
+          </label>
+          <input
+            type="text"
+            id="comment"
+            name="comment"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            disabled={addCommentQuery.isPending}
+          />
+          <button type="submit" disabled={addCommentQuery.isPending}>
+            {addCommentQuery.isPending ? "Loading" : "Add Comment"}
+          </button>
+        </form>
+      )}
     </>
   );
 }
