@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { useFetchPost } from "../../hooks/userQueries";
 import "./PostList.css";
 import { useFetchAuthorPosts } from "../../hooks/editorQueries";
+import { useState } from "react";
 
 type PostListProps = {
   editorMode: boolean;
@@ -10,14 +11,64 @@ type PostListProps = {
 export default function PostList({ editorMode }: PostListProps) {
   const postsQuery = editorMode ? useFetchAuthorPosts() : useFetchPost();
 
-  console.log(postsQuery.data);
   const posts = postsQuery.data;
+
+  const [isAddPost, setIsAddPost] = useState(false);
+  const [titleInput, setTitleInput] = useState("");
+  const [contentInput, setContentInput] = useState("");
+
+  const handlePublishPost = (postId: number, isPublished: boolean) => {
+    console.log(postId, isPublished);
+  };
+
+  const handleSubmitCreate = (e: React.SubmitEvent) => {
+    e.preventDefault();
+  };
+
+  const handleCancelCreate = () => {
+    setIsAddPost(false);
+    setTitleInput("");
+    setContentInput("");
+  };
 
   if (postsQuery.isLoading) return <h1>Loading...</h1>;
   if (postsQuery.error) return <h1>{postsQuery.error.message}</h1>;
 
   return (
     <div className="post-list">
+      <div className="add-post">
+        {!isAddPost && (
+          <button onClick={() => setIsAddPost(true)}>Create Post</button>
+        )}
+        {isAddPost && (
+          <form className="post-form" onSubmit={handleSubmitCreate}>
+            <div className="form-field">
+              <label htmlFor="post-title">Post Title</label>
+              <input
+                type="text"
+                name="post-title"
+                id="post-title"
+                value={titleInput}
+                onChange={(e) => setTitleInput(e.target.value)}
+                required
+              ></input>
+              <label htmlFor="post-content">Post Content</label>
+              <textarea
+                name="post-content"
+                id="post-content"
+                value={contentInput}
+                onChange={(e) => setContentInput(e.target.value)}
+              ></textarea>
+            </div>
+            <div className="post-form-actions">
+              <button type="button" onClick={handleCancelCreate}>
+                Cancel
+              </button>
+              <button type="submit">Create Post</button>
+            </div>
+          </form>
+        )}
+      </div>
       <div className="post-list-grid">
         {posts?.map(({ id, title, author, updatedAt, published }) => (
           <article className="post-item" key={id}>
@@ -36,9 +87,9 @@ export default function PostList({ editorMode }: PostListProps) {
             <footer className="post-meta">
               <span className="post-author">By {author.name}</span>
               {editorMode && (
-                <span className="post-ispublished">
-                  Published: {published ? "Yes" : "No"}
-                </span>
+                <button onClick={() => handlePublishPost(id, published)}>
+                  {published ? "Unpublish Post" : "Publish Post"}
+                </button>
               )}
               <time dateTime={new Date(updatedAt).toISOString()}>
                 {new Date(updatedAt).toLocaleDateString()}

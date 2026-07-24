@@ -9,7 +9,7 @@ router.get("/my-posts", controller.getAuthorPosts);
 router.post("/posts/create", controller.postCreatePost);
 router.put("/posts/edit/:postId", controller.putEditPost);
 router.post("/posts/publish/:postId", controller.postPublishPost);
-router.post("/posts/unpublis/:postId", controller.postUnpublishPost);
+router.post("/posts/unpublish/:postId", controller.postUnpublishPost);
 router.delete("/posts/delete/:postId", controller.deletePost);
 
 export default router;
