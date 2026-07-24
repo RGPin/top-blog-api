@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.use(protectRoute);
 router.get("/my-posts", controller.getAuthorPosts);
+router.get("/my-posts/details/:postId", controller.getAuthorPostDetails);
 router.post("/posts/create", controller.postCreatePost);
 router.put("/posts/edit/:postId", controller.putEditPost);
 router.post("/posts/publish/:postId", controller.postPublishPost);

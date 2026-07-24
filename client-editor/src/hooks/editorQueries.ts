@@ -3,6 +3,7 @@ import {
   createPost,
   deleteUserPost,
   editUserPost,
+  getAuthorPostDetails,
   getUserPosts,
   togglePublishPost,
 } from "../api/editor";
@@ -15,6 +16,17 @@ export const useFetchAuthorPosts = () => {
     placeholderData: [],
     meta: {
       errorMessage: "useFetchAuthorPosts failed",
+    },
+  });
+};
+
+export const useFetchAuthorPostDetails = (postId: number) => {
+  return useQuery({
+    queryKey: ["user-post", postId],
+    queryFn: ({ signal }) => getAuthorPostDetails(postId, signal),
+    enabled: !!postId,
+    meta: {
+      errorMessage: "useFetchAuthorPostDetails failed",
     },
   });
 };

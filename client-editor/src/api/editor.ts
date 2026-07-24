@@ -1,5 +1,9 @@
-import type { Post, PostWithAuthor } from "../types";
+import type { Post, PostDetails, PostWithAuthor } from "../types";
 import { authFetch } from "./auth";
+
+type PostDetailResponse = {
+  postDetails: PostDetails;
+};
 
 type PostsResponse = {
   authorPosts: PostWithAuthor[];
@@ -23,6 +27,18 @@ type UnpublishedResponse = {
 
 type CreateResponse = {
   createdPost: Post;
+};
+
+export const getAuthorPostDetails = async (
+  postId: number,
+  signal: AbortSignal,
+): Promise<PostDetails> => {
+  const data: PostDetailResponse = await authFetch(
+    `/api/editor/my-posts/details/${postId}`,
+    { signal },
+  );
+  console.log(data);
+  return data.postDetails;
 };
 
 export const getUserPosts = async (

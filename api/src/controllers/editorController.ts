@@ -4,6 +4,10 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 // create middleware to prevent repeated codes (see if checks)
 
+type PostDetailParams = {
+  postId: string;
+};
+
 type CreatePostBody = {
   title: string;
   content?: string;
@@ -38,6 +42,32 @@ export const getAuthorPosts = asyncHandler(
     const authorPosts = await db.retrieveAuthorPosts(authorId);
 
     res.status(200).json({ authorPosts });
+  },
+);
+
+export const getAuthorPostDetails = asyncHandler(
+  async (req: Request<PostDetailParams>, res: Response): Promise<void> => {
+    const postId = Number(req.params.postId);
+
+    if (isNaN(postId)) {
+      res.status(400).json({ message: "Invalid Post ID format" });
+      return;
+    }
+
+    const post = await db.findPost(postId);
+
+    if (!post) {
+      res.status(404).json({ message: "Post not found" });
+      return;
+    }
+
+    if (post?.authorId !== req.user?.userId && !post?.published) {
+      res.status(403).json({ message: "Forbidden" });
+      return;
+    }
+
+    const postDetails = await db.retrievePostWithComments(postId);
+    res.status(200).json({ postDetails });
   },
 );
 
