@@ -74,35 +74,33 @@ export default function PostList({ editorMode }: PostListProps) {
         )}
       </div>
       <div className="post-list-grid">
-        {posts
-          ?.filter((post) => editorMode || post.published)
-          .map(({ id, title, author, updatedAt, published }) => (
-            <article className="post-item" key={id}>
-              <header className="post-header">
-                <h2 className="post-title">
-                  <Link
-                    to={editorMode ? `/my-posts/details/${id}` : `/post/${id}`}
-                    className="post-link"
-                    state={editorMode ? { editorMode } : undefined}
-                  >
-                    {title}
-                  </Link>
-                </h2>
-              </header>
+        {posts?.map(({ id, title, author, updatedAt, published }) => (
+          <article className="post-item" key={id}>
+            <header className="post-header">
+              <h2 className="post-title">
+                <Link
+                  to={editorMode ? `/my-posts/details/${id}` : `/post/${id}`}
+                  className="post-link"
+                  state={editorMode ? { editorMode } : undefined}
+                >
+                  {title}
+                </Link>
+              </h2>
+            </header>
 
-              <footer className="post-meta">
-                <span className="post-author">By {author.name}</span>
-                {editorMode && (
-                  <button onClick={() => handlePublishPost(id, published)}>
-                    {published ? "Unpublish Post" : "Publish Post"}
-                  </button>
-                )}
-                <time dateTime={new Date(updatedAt).toISOString()}>
-                  {new Date(updatedAt).toLocaleDateString()}
-                </time>
-              </footer>
-            </article>
-          ))}
+            <footer className="post-meta">
+              <span className="post-author">By {author.name}</span>
+              {editorMode && (
+                <button onClick={() => handlePublishPost(id, published)}>
+                  {published ? "Unpublish Post" : "Publish Post"}
+                </button>
+              )}
+              <time dateTime={new Date(updatedAt).toISOString()}>
+                {new Date(updatedAt).toLocaleDateString()}
+              </time>
+            </footer>
+          </article>
+        ))}
       </div>
     </div>
   );
