@@ -53,10 +53,10 @@ export default function PostList({ editorMode }: PostListProps) {
   return (
     <div className="post-list">
       <div className="add-post">
-        {!isAddPost && (
+        {!isAddPost && editorMode && (
           <button onClick={() => setIsAddPost(true)}>Create Post</button>
         )}
-        {isAddPost && (
+        {isAddPost && editorMode && (
           <form className="post-form" onSubmit={handleSubmitCreate}>
             <div className="form-field">
               <label htmlFor="post-title">Post Title</label>
