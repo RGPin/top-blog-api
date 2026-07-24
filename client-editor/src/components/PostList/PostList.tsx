@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { useFetchPost } from "../../hooks/userQueries";
 import "./PostList.css";
 import {
+  useCreatePost,
   useFetchAuthorPosts,
   useTogglePublish,
 } from "../../hooks/editorQueries";
@@ -14,6 +15,7 @@ type PostListProps = {
 export default function PostList({ editorMode }: PostListProps) {
   const postsQuery = editorMode ? useFetchAuthorPosts() : useFetchPost();
   const publishMutation = useTogglePublish();
+  const createMutation = useCreatePost();
 
   const posts = postsQuery.data;
 
@@ -27,6 +29,16 @@ export default function PostList({ editorMode }: PostListProps) {
 
   const handleSubmitCreate = (e: React.SubmitEvent) => {
     e.preventDefault();
+    const title = titleInput.trim();
+    const content = contentInput.trim();
+
+    if (!title) return;
+
+    createMutation.mutate({ title, content });
+
+    setIsAddPost(false);
+    setTitleInput("");
+    setContentInput("");
   };
 
   const handleCancelCreate = () => {

@@ -21,6 +21,10 @@ type UnpublishedResponse = {
   unpublishedPost: Post;
 };
 
+type CreateResponse = {
+  createdPost: Post;
+};
+
 export const getUserPosts = async (
   signal: AbortSignal,
 ): Promise<PostWithAuthor[]> => {
@@ -81,4 +85,18 @@ export const togglePublishPost = async (publishData: {
     { method: "POST" },
   );
   return data.publishedPost;
+};
+
+export const createPost = async (postData: {
+  title: string;
+  content: string;
+}): Promise<Post> => {
+  const data: CreateResponse = await authFetch("/api/editor/posts/create", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title: postData.title, content: postData.content }),
+  });
+  return data.createdPost;
 };

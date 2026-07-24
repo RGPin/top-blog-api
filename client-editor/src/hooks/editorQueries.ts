@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
+  createPost,
   deleteUserPost,
   editUserPost,
   getUserPosts,
@@ -49,6 +50,19 @@ export const useTogglePublish = () => {
     mutationFn: togglePublishPost,
     onSuccess: () => {
       console.log("Toggle publish success");
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["user-posts"] });
+    },
+  });
+};
+
+export const useCreatePost = () => {
+  return useMutation({
+    mutationFn: createPost,
+    onSuccess: () => {
+      console.log("Post create success");
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
