@@ -62,6 +62,11 @@ export const putEditPost = asyncHandler(
     const body = req.body as EditPostBody;
     const postId = Number(req.params.postId);
 
+    if (!body.title?.trim() && !body.content?.trim()) {
+      res.status(400).json({ message: "At least one field should be filled." });
+      return;
+    }
+
     if (isNaN(postId)) {
       res.status(400).json({ message: "Invalid Post ID format" });
       return;

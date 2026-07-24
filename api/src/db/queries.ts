@@ -222,13 +222,18 @@ export const updatePost = async (
   postId: number,
   title?: string,
   content?: string,
-): Promise<Post> => {
+): Promise<PostsWithAuthors> => {
   try {
     const updatedPost = await prisma.post.update({
       where: { id: postId },
       data: {
         ...(title !== undefined && { title }),
         ...(content !== undefined && { content }),
+      },
+      include: {
+        author: {
+          select: { name: true },
+        },
       },
     });
     return updatedPost;

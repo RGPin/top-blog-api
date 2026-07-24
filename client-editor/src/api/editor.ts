@@ -5,6 +5,10 @@ type PostsResponse = {
   authorPosts: PostWithAuthor[];
 };
 
+type EditResponse = {
+  editedPost: PostWithAuthor;
+};
+
 export const getUserPosts = async (
   signal: AbortSignal,
 ): Promise<PostWithAuthor[]> => {
@@ -13,4 +17,25 @@ export const getUserPosts = async (
   });
   console.log(data);
   return data.authorPosts;
+};
+
+export const editUserPost = async (editData: {
+  postId: number;
+  title?: string;
+  content?: string;
+}): Promise<PostWithAuthor> => {
+  const data: EditResponse = await authFetch(
+    `/api/editor/posts/edit/${editData.postId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: editData.title,
+        content: editData.content,
+      }),
+    },
+  );
+  return data.editedPost;
 };

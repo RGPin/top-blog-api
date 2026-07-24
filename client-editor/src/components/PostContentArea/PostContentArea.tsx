@@ -2,12 +2,15 @@ import { useLocation } from "react-router";
 import type { PostDetails } from "../../types";
 import PostContent from "../PostContent/PostContent";
 import { useState } from "react";
+import { useEditAuthorPost } from "../../hooks/editorQueries";
 
 type PostProps = {
   post: PostDetails;
 };
 export default function PostContentArea({ post }: PostProps) {
   const { editorMode } = useLocation().state || {};
+
+  const editMutation = useEditAuthorPost(post.id);
 
   const [isEditing, setIsEditing] = useState(false);
   const [titleInput, setTitleInput] = useState(post.title);
@@ -19,10 +22,21 @@ export default function PostContentArea({ post }: PostProps) {
     setContentInput(post.content);
   };
 
+  const handleSubmitEdit = (e: React.SubmitEvent) => {
+    e.preventDefault();
+
+    const title = titleInput.trim();
+    const content = contentInput.trim();
+    if (!title && !content) return;
+
+    editMutation.mutateAsync({ postId: post.id, title, content });
+    setIsEditing(false);
+  };
+
   return (
     <>
       {editorMode && isEditing && (
-        <form className="post-form">
+        <form className="post-form" onSubmit={handleSubmitEdit}>
           <div className="form-field">
             <label htmlFor="post-title">Post Title</label>
             <input
@@ -31,6 +45,7 @@ export default function PostContentArea({ post }: PostProps) {
               id="post-title"
               value={titleInput}
               onChange={(e) => setTitleInput(e.target.value)}
+              required
             ></input>
             <label htmlFor="post-content">Post Content</label>
             <textarea
