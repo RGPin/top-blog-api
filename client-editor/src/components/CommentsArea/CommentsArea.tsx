@@ -1,3 +1,4 @@
+import "./CommentsArea.css";
 import { useState } from "react";
 import type { PostDetails } from "../../types";
 import Comment from "../Comment/Comment";
@@ -51,14 +52,15 @@ export default function CommentsArea({ post }: PostProps) {
           <label style={{ display: "none" }} htmlFor="comment">
             Add Comment
           </label>
-          <input
-            type="text"
+          <textarea
             id="comment"
             name="comment"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={addCommentQuery.isPending}
-          />
+            maxLength={1000}
+            className="comment-input"
+          ></textarea>
           <button type="submit" disabled={addCommentQuery.isPending}>
             {addCommentQuery.isPending ? "Loading" : "Add Comment"}
           </button>

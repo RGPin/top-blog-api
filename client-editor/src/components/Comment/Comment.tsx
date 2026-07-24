@@ -1,3 +1,4 @@
+import "./Comment.css";
 import { useState } from "react";
 import { useDeleteComment, useEditComment } from "../../hooks/userQueries";
 import { useTokenPayload } from "../../hooks/useTokenPayload";
@@ -45,13 +46,15 @@ export default function Comment({ comment, postId }: CommentProps) {
           <label style={{ display: "none" }} htmlFor="edit-comment">
             Edit Comment
           </label>
-          <input
-            type="text"
+          <textarea
             name="edit-comment"
             id="edit-comment"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-          />
+            disabled={editCommentQuery.isPending}
+            maxLength={1000}
+            className="comment-input"
+          ></textarea>
           <button type="button" onClick={() => handleSaveEdit(comment.id)}>
             Save
           </button>

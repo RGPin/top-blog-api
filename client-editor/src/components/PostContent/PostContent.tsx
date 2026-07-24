@@ -1,3 +1,4 @@
+import "./PostContent.css";
 import type { PostDetails } from "../../types";
 
 type PostProps = {

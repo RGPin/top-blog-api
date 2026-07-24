@@ -1,0 +1,8 @@
+.comment-item {
+  .comment-input {
+    width: 100%;
+  }
+  .comment-body {
+    white-space: pre-line;
+  }
+}
