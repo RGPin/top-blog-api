@@ -51,6 +51,7 @@
 
   .post-header {
     overflow: hidden;
+    word-break: break-all;
   }
 
   .post-link {

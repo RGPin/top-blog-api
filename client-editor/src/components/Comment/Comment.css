@@ -1,4 +1,7 @@
 .comment-item {
+  overflow: hidden;
+  word-break: break-all;
+
   .comment-input {
     width: 100%;
   }

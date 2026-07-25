@@ -1,3 +1,4 @@
+import "./Comment.css";
 import type { Comment } from "../../types";
 
 type CommentProps = {
