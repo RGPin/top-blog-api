@@ -18,9 +18,9 @@ export default function PostDetails() {
   if (!post) return <h1>Loading post...</h1>;
 
   return (
-    <article className="post-details">
+    <div className="post-details">
       <PostContentArea post={post} />
       <CommentsArea post={post} />
-    </article>
+    </div>
   );
 }

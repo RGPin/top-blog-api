@@ -48,7 +48,7 @@ export default function PostContentArea({ post }: PostProps) {
   };
 
   return (
-    <>
+    <div className="post-content-area">
       {editorMode && isEditing && (
         <form className="post-form" onSubmit={handleSubmitEdit}>
           <div className="form-field">
@@ -84,6 +84,6 @@ export default function PostContentArea({ post }: PostProps) {
           <button onClick={handleDeletePost}>Delete Post</button>
         </div>
       )}
-    </>
+    </div>
   );
 }

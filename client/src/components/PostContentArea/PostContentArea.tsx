@@ -1,37 +1,14 @@
+import "./PostContentArea.css";
 import type { PostDetails } from "../../types";
+import PostContent from "../PostContent/PostContent";
 
 type PostProps = {
   post: PostDetails;
 };
 export default function PostContentArea({ post }: PostProps) {
   return (
-    <section className="post-main" aria-labelledby="post-title">
-      <header className="post-header">
-        <h2 id="post-title" className="post-title">
-          {post.title}
-        </h2>
-        <div className="post-meta">
-          <address className="post-author">
-            By {post.author.name || "Anonymous"}
-          </address>
-          {post.updatedAt && (
-            <time
-              className="post-date"
-              dateTime={new Date(post.updatedAt).toISOString()}
-            >
-              {new Date(post.updatedAt).toLocaleDateString(undefined, {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </time>
-          )}
-        </div>
-      </header>
-
-      <div className="post-body">
-        <p>{post.content}</p>
-      </div>
-    </section>
+    <div className="post-content-area">
+      <PostContent post={post} />
+    </div>
   );
 }

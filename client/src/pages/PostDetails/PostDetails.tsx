@@ -1,3 +1,4 @@
+import "./PostDetails.css";
 import { useParams } from "react-router";
 import { useFetchPostDetails } from "../../hooks/userQueries";
 import PostContentArea from "../../components/PostContentArea/PostContentArea";
@@ -15,9 +16,9 @@ export default function PostDetails() {
   if (postDetailsQuery.error) return <h1>{postDetailsQuery.error.message}</h1>;
   if (!post) return <h1>Loading post...</h1>;
   return (
-    <article className="post-details">
+    <div className="post-details">
       <PostContentArea post={post} />
       <CommentsArea post={post} />
-    </article>
+    </div>
   );
 }
