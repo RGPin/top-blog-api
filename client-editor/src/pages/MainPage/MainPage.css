@@ -1,0 +1,18 @@
+.main-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+
+  h1 {
+    margin: 0 auto;
+    text-align: center;
+    font-size: var(--text-xl);
+  }
+
+  @media (width <= 600px) {
+    h1 {
+      font-size: var(--text-lg);
+    }
+  }
+}
