@@ -30,6 +30,8 @@
   --radius-xs: 12px;
   --radius-sm: 18px;
   --radius-md: 24px;
+
+  --color-text-muted: rgba(0, 0, 0, 0.7);
 }
 
 a,
