@@ -1,3 +1,4 @@
+import "./CommentsArea.css";
 import type { PostDetails } from "../../types";
 import Comment from "../Comment/Comment";
 

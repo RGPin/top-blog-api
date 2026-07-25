@@ -50,8 +50,8 @@
   }
 
   .post-header {
-    overflow: hidden;
-    word-break: break-all;
+    overflow-wrap: break-word;
+    word-break: normal;
   }
 
   .post-link {

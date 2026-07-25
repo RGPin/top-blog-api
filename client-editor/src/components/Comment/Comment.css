@@ -1,10 +1,20 @@
 .comment-item {
-  overflow: hidden;
-  word-break: break-all;
+  overflow-wrap: break-word;
+  word-break: normal;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--color-border-muted);
+
+  .comment-author {
+    display: block;
+    text-align: right;
+    color: var(--color-text-muted);
+  }
 
   .comment-input {
     width: 100%;
   }
+
   .comment-body {
     white-space: pre-line;
   }

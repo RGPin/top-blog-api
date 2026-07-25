@@ -5,8 +5,8 @@
   margin-top: var(--space-md);
 
   .post-header {
-    overflow: hidden;
-    word-break: break-all;
+    overflow-wrap: break-word;
+    word-break: normal;
   }
 
   .post-meta {
@@ -19,7 +19,7 @@
 
   .post-body {
     white-space: pre-line;
-    overflow: hidden;
-    word-break: break-all;
+    overflow-wrap: break-word;
+    word-break: normal;
   }
 }
