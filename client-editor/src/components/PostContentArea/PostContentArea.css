@@ -1,0 +1,4 @@
+.post-content-area {
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid black;
+}

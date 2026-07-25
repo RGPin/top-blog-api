@@ -1,3 +1,4 @@
+import "./PostContentArea.css";
 import { useLocation, useNavigate } from "react-router";
 import type { PostDetails } from "../../types";
 import PostContent from "../PostContent/PostContent";

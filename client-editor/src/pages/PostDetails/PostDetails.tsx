@@ -1,3 +1,4 @@
+import "./PostDetails.css";
 import { useLocation, useParams } from "react-router";
 import { useFetchPostDetails } from "../../hooks/userQueries";
 import PostContentArea from "../../components/PostContentArea/PostContentArea";

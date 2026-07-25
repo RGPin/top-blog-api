@@ -3,4 +3,5 @@
   margin: 0 auto;
   font-family: sans-serif;
   padding: var(--space-md);
+  word-break: break-all;
 }
