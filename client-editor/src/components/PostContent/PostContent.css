@@ -18,6 +18,7 @@
   }
 
   .post-body {
+    white-space: pre-line;
     overflow: hidden;
     word-break: break-all;
   }

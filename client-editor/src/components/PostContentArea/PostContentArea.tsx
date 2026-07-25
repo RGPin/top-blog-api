@@ -54,20 +54,20 @@ export default function PostContentArea({ post }: PostProps) {
         <form className="post-form" onSubmit={handleSubmitEdit}>
           <div className="form-field">
             <label htmlFor="post-title">Post Title</label>
-            <input
-              type="text"
+            <textarea
               name="post-title"
               id="post-title"
               value={titleInput}
               onChange={(e) => setTitleInput(e.target.value)}
               required
-            ></input>
+            ></textarea>
             <label htmlFor="post-content">Post Content</label>
             <textarea
               name="post-content"
               id="post-content"
               value={contentInput}
               onChange={(e) => setContentInput(e.target.value)}
+              className="content-input"
             ></textarea>
           </div>
           <div className="post-form-actions">
