@@ -54,26 +54,31 @@ export default function PostList({ editorMode }: PostListProps) {
     <div className="post-list">
       <div className="add-post">
         {!isAddPost && editorMode && (
-          <button onClick={() => setIsAddPost(true)}>Create Post</button>
+          <button
+            onClick={() => setIsAddPost(true)}
+            className="create-post-btn"
+          >
+            + Create Post
+          </button>
         )}
         {isAddPost && editorMode && (
           <form className="post-form" onSubmit={handleSubmitCreate}>
             <div className="form-field">
               <label htmlFor="post-title">Post Title</label>
-              <input
-                type="text"
+              <textarea
                 name="post-title"
                 id="post-title"
                 value={titleInput}
                 onChange={(e) => setTitleInput(e.target.value)}
                 required
-              ></input>
+              ></textarea>
               <label htmlFor="post-content">Post Content</label>
               <textarea
                 name="post-content"
                 id="post-content"
                 value={contentInput}
                 onChange={(e) => setContentInput(e.target.value)}
+                className="content-input"
               ></textarea>
             </div>
             <div className="post-form-actions">

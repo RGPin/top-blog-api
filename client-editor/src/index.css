@@ -39,3 +39,8 @@ button {
   all: unset;
   cursor: pointer;
 }
+
+textarea {
+  font-family: sans-serif;
+  font-size: 1rem;
+}
