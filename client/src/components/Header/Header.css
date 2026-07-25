@@ -4,6 +4,19 @@
 
   .actions {
     display: flex;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .actions * {
+    padding: var(--space-xs) var(--space-md);
+  }
+}
+
+@media (width <= 600px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
     gap: var(--space-md);
   }
 }
