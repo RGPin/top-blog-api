@@ -103,7 +103,10 @@ export default function PostList({ editorMode }: PostListProps) {
             <footer className="post-meta">
               <span className="post-author">By {author.name}</span>
               {editorMode && (
-                <button onClick={() => handlePublishPost(id, published)}>
+                <button
+                  onClick={() => handlePublishPost(id, published)}
+                  className="publish-btn"
+                >
                   {published ? "Unpublish Post" : "Publish Post"}
                 </button>
               )}
