@@ -31,7 +31,6 @@ export default function Comment({ comment, postId }: CommentProps) {
     if (!comment) return;
     editCommentQuery.mutate({ id: commentId, content: comment });
     setIsEditing(null);
-    setInput("");
   };
 
   const handleCancelEdit = () => {
@@ -55,12 +54,14 @@ export default function Comment({ comment, postId }: CommentProps) {
             maxLength={1000}
             className="comment-input"
           ></textarea>
-          <button type="button" onClick={() => handleSaveEdit(comment.id)}>
-            Save
-          </button>
-          <button type="button" onClick={handleCancelEdit}>
-            Cancel
-          </button>
+          <div className="form-actions">
+            <button type="button" onClick={() => handleSaveEdit(comment.id)}>
+              Save
+            </button>
+            <button type="button" onClick={handleCancelEdit}>
+              Cancel
+            </button>
+          </div>
         </form>
       ) : (
         <blockquote className="comment-body">
@@ -70,16 +71,8 @@ export default function Comment({ comment, postId }: CommentProps) {
           </cite>
         </blockquote>
       )}
-      {userId === comment.author.id && (
+      {userId === comment.author.id && !isEditing && (
         <div className="actions">
-          <button
-            onClick={() => handleDelete(comment.id)}
-            disabled={
-              deleteCommentQuery.isPending || editCommentQuery.isPending
-            }
-          >
-            Delete
-          </button>
           <button
             onClick={() => handleEdit(comment.id)}
             disabled={
@@ -87,6 +80,14 @@ export default function Comment({ comment, postId }: CommentProps) {
             }
           >
             Edit
+          </button>
+          <button
+            onClick={() => handleDelete(comment.id)}
+            disabled={
+              deleteCommentQuery.isPending || editCommentQuery.isPending
+            }
+          >
+            Delete
           </button>
         </div>
       )}

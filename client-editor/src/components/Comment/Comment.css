@@ -18,4 +18,19 @@
   .comment-body {
     white-space: pre-line;
   }
+
+  .form-actions,
+  .actions {
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xs);
+  }
+
+  .form-actions button,
+  .actions button {
+    flex-grow: 1;
+    border: 1px solid black;
+    text-align: center;
+  }
 }

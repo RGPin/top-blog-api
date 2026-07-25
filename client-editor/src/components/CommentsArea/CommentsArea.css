@@ -1,5 +1,27 @@
 form {
   display: flex;
+  gap: var(--space-md);
+
+  .comment-input {
+    flex-grow: 1;
+  }
+
+  .add-comment-btn {
+    border: 1px solid black;
+    padding: 0 var(--space-sm);
+    text-align: center;
+  }
+
+  @media (width <= 400px) {
+    flex-direction: column;
+    .add-comment-btn {
+      padding: var(--space-sm);
+    }
+  }
+}
+
+.comments-section {
+  display: flex;
   flex-direction: column;
   gap: var(--space-md);
 
@@ -7,9 +29,5 @@ form {
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
-  }
-
-  .comment-input {
-    width: 100%;
   }
 }

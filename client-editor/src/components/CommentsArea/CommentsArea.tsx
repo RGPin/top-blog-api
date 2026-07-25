@@ -48,7 +48,7 @@ export default function CommentsArea({ post }: PostProps) {
         </section>
       )}
       {!editorMode && (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="comments-area-form">
           <label style={{ display: "none" }} htmlFor="comment">
             Add Comment
           </label>
@@ -61,7 +61,11 @@ export default function CommentsArea({ post }: PostProps) {
             maxLength={1000}
             className="comment-input"
           ></textarea>
-          <button type="submit" disabled={addCommentQuery.isPending}>
+          <button
+            type="submit"
+            disabled={addCommentQuery.isPending}
+            className="add-comment-btn"
+          >
             {addCommentQuery.isPending ? "Loading" : "Add Comment"}
           </button>
         </form>
