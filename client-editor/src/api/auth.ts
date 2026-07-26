@@ -139,8 +139,9 @@ export const authFetch = async (url: string, options: RequestInit = {}) => {
       throw new SessionExpiredError();
     }
   } catch (error) {
-    clearAccessToken();
-    throw new SessionExpiredError(); // check if error instanceof SessionExpiredError
+    throw error instanceof SessionExpiredError
+      ? error
+      : new SessionExpiredError(); // check if error instanceof SessionExpiredError
   }
 
   if (!response.ok) throw new Error(response.statusText);

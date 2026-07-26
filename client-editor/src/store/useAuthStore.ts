@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { queryClient } from "../queryClient";
 
 type AuthState = {
   accessToken: string | null;
@@ -11,3 +12,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   setToken: (token: string) => set({ accessToken: token }),
   clearToken: () => set({ accessToken: null }),
 }));
+
+export const handleGlobalLogout = () => {
+  useAuthStore.getState().clearToken();
+  queryClient.clear();
+  window.location.replace("/login");
+};
