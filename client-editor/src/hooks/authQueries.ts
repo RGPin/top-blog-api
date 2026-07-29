@@ -26,7 +26,7 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      console.log("Login success ", data);
+      console.log("Login success ");
       setTokenOnLogin(data);
       navigate("/");
     },
