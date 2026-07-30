@@ -12,7 +12,8 @@
     "prisma:reset": "node --env-file=.env ./node_modules/prisma/build/index.js migrate reset",
     "queryTest": "tsx --env-file=.env src/db/queries.ts",
     "prisma:studio": "node --env-file=.env ./node_modules/prisma/build/index.js studio",
-    "populateDb": "tsx --env-file=.env src/db/populate.ts"
+    "populateTS": "tsx --env-file=.env src/db/populate.ts",
+    "populateJS": "node --env-file=.env dist/db/populate.js"
   },
   "keywords": [],
   "author": "",
