@@ -9,6 +9,8 @@
     "start": "node dist/app.js",
     "prisma:generate": "node --env-file=.env ./node_modules/prisma/build/index.js generate",
     "prisma:migrate": "node --env-file=.env ./node_modules/prisma/build/index.js migrate dev",
+    "deploy-prisma:generate": "node ./node_modules/prisma/build/index.js generate",
+    "deploy-prisma:migrate": "node ./node_modules/prisma/build/index.js migrate dev",
     "prisma:reset": "node --env-file=.env ./node_modules/prisma/build/index.js migrate reset",
     "queryTest": "tsx --env-file=.env src/db/queries.ts",
     "prisma:studio": "node --env-file=.env ./node_modules/prisma/build/index.js studio",
