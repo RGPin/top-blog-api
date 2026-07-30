@@ -1,3 +1,4 @@
+import { API_URL } from "../apiUrl";
 import type { Post, PostDetails, PostWithAuthor } from "../types";
 import { authFetch } from "./auth";
 
@@ -34,7 +35,7 @@ export const getAuthorPostDetails = async (
   signal: AbortSignal,
 ): Promise<PostDetails> => {
   const data: PostDetailResponse = await authFetch(
-    `/api/editor/my-posts/details/${postId}`,
+    `${API_URL}/api/editor/my-posts/details/${postId}`,
     { signal },
   );
   console.log(data);
@@ -44,9 +45,12 @@ export const getAuthorPostDetails = async (
 export const getUserPosts = async (
   signal: AbortSignal,
 ): Promise<PostWithAuthor[]> => {
-  const data: PostsResponse = await authFetch("/api/editor/my-posts", {
-    signal,
-  });
+  const data: PostsResponse = await authFetch(
+    `${API_URL}/api/editor/my-posts`,
+    {
+      signal,
+    },
+  );
   console.log(data);
   return data.authorPosts;
 };
@@ -57,7 +61,7 @@ export const editUserPost = async (editData: {
   content?: string;
 }): Promise<PostWithAuthor> => {
   const data: EditResponse = await authFetch(
-    `/api/editor/posts/edit/${editData.postId}`,
+    `${API_URL}/api/editor/posts/edit/${editData.postId}`,
     {
       method: "PUT",
       headers: {
@@ -76,7 +80,7 @@ export const deleteUserPost = async (deleteData: {
   postId: number;
 }): Promise<Post> => {
   const data: DeleteResponse = await authFetch(
-    `/api/editor/posts/delete/${deleteData.postId}`,
+    `${API_URL}/api/editor/posts/delete/${deleteData.postId}`,
     {
       method: "DELETE",
     },
@@ -90,14 +94,14 @@ export const togglePublishPost = async (publishData: {
 }): Promise<Post> => {
   if (publishData.isPublished) {
     const data: UnpublishedResponse = await authFetch(
-      `/api/editor/posts/unpublish/${publishData.postId}`,
+      `${API_URL}/api/editor/posts/unpublish/${publishData.postId}`,
       { method: "POST" },
     );
     return data.unpublishedPost;
   }
 
   const data: PublishedResponse = await authFetch(
-    `/api/editor/posts/publish/${publishData.postId}`,
+    `${API_URL}/api/editor/posts/publish/${publishData.postId}`,
     { method: "POST" },
   );
   return data.publishedPost;
@@ -107,12 +111,18 @@ export const createPost = async (postData: {
   title: string;
   content: string;
 }): Promise<Post> => {
-  const data: CreateResponse = await authFetch("/api/editor/posts/create", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  const data: CreateResponse = await authFetch(
+    `${API_URL}/api/editor/posts/create`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: postData.title,
+        content: postData.content,
+      }),
     },
-    body: JSON.stringify({ title: postData.title, content: postData.content }),
-  });
+  );
   return data.createdPost;
 };

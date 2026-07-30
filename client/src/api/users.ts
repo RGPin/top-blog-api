@@ -1,3 +1,4 @@
+import { API_URL } from "../apiUrl";
 import type {
   PostDetails,
   PostWithAuthor,
@@ -8,14 +9,14 @@ import type {
 export const getPosts = async (
   signal: AbortSignal,
 ): Promise<PostWithAuthor[]> => {
-  const response = await fetch("/api/user/posts", { signal });
+  const response = await fetch(`${API_URL}/api/user/posts`, { signal });
   if (!response.ok) throw new Error(response.statusText);
   const data: PostsResponse = await response.json();
   return data.posts;
 };
 
 export const getPostDetails = async (postId: number): Promise<PostDetails> => {
-  const response = await fetch(`/api/user/posts/${postId}`);
+  const response = await fetch(`${API_URL}/api/user/posts/${postId}`);
   if (!response.ok) throw new Error(response.statusText);
   const data: PostDetailsResponse = await response.json();
   return data.postDetails;

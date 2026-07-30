@@ -1,3 +1,4 @@
+import { API_URL } from "../apiUrl";
 import { useAuthStore } from "../store/useAuthStore";
 
 let refreshPromise: Promise<void> | null = null;
@@ -7,7 +8,7 @@ export const refreshToken = async () => {
     return refreshPromise;
   }
 
-  refreshPromise = fetch("/api/auth/refresh", {
+  refreshPromise = fetch(`${API_URL}/api/auth/refresh`, {
     method: "POST",
     credentials: "include",
   })

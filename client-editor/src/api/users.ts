@@ -1,3 +1,4 @@
+import { API_URL } from "../apiUrl";
 import type {
   PostDetails,
   PostWithAuthor,
@@ -13,14 +14,14 @@ import { authFetch } from "./auth";
 export const getPosts = async (
   signal: AbortSignal,
 ): Promise<PostWithAuthor[]> => {
-  const response = await fetch("/api/user/posts", { signal });
+  const response = await fetch(`${API_URL}/api/user/posts`, { signal });
   if (!response.ok) throw new Error(response.statusText);
   const data: PostsResponse = await response.json();
   return data.posts;
 };
 
 export const getPostDetails = async (postId: number): Promise<PostDetails> => {
-  const response = await fetch(`/api/user/posts/${postId}`);
+  const response = await fetch(`${API_URL}/api/user/posts/${postId}`);
   if (!response.ok) throw new Error(response.statusText);
   const data: PostDetailsResponse = await response.json();
   return data.postDetails;
@@ -31,7 +32,7 @@ export const addComment = async (commentData: {
   content: string;
 }): Promise<Comment> => {
   const data: AddCommentResponse = await authFetch(
-    `/api/user/comments/add/${commentData.postId}`,
+    `${API_URL}/api/user/comments/add/${commentData.postId}`,
     {
       method: "POST",
       headers: {
@@ -48,7 +49,7 @@ export const editComment = async (commentData: {
   content: string;
 }): Promise<Comment> => {
   const data: EditCommentResponse = await authFetch(
-    `/api/user/comments/edit/${commentData.id}`,
+    `${API_URL}/api/user/comments/edit/${commentData.id}`,
     {
       method: "PUT",
       headers: {
@@ -62,7 +63,7 @@ export const editComment = async (commentData: {
 
 export const deleteComment = async (commentId: number): Promise<Comment> => {
   const data: DeleteCommentResponse = await authFetch(
-    `/api/user/comments/delete/${commentId}`,
+    `${API_URL}/api/user/comments/delete/${commentId}`,
     {
       method: "DELETE",
     },

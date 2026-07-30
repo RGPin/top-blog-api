@@ -1,3 +1,4 @@
+import { API_URL } from "../apiUrl";
 import { SessionExpiredError } from "../errors";
 import { useAuthStore } from "../store/useAuthStore";
 import type {
@@ -12,7 +13,7 @@ export const signupUser = async (userData: {
   email: string;
   name?: string;
 }): Promise<User> => {
-  const response = await fetch("/api/auth/signup", {
+  const response = await fetch(`${API_URL}/api/auth/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -25,7 +26,7 @@ export const signupUser = async (userData: {
 };
 
 export const loginUser = async (email: string): Promise<AccessToken> => {
-  const response = await fetch("/api/auth/login", {
+  const response = await fetch(`${API_URL}/api/auth/login`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -156,7 +157,7 @@ export const authFetch = async (url: string, options: RequestInit = {}) => {
 
 // logout
 export const logoutUser = async (): Promise<void> => {
-  const response = await fetch("/api/auth/logout", {
+  const response = await fetch(`${API_URL}/api/auth/logout`, {
     method: "DELETE",
     credentials: "include",
   });

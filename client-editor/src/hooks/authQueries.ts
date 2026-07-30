@@ -10,10 +10,12 @@ import { useNavigate } from "react-router";
 import { queryClient } from "../queryClient";
 
 export const useSignUp = () => {
+  const navigate = useNavigate();
   return useMutation({
     mutationFn: signupUser,
     onSuccess: (data, variables) => {
       console.log(data, variables);
+      navigate("/login");
     },
     onError: (error) => {
       console.error("Signup failed: ", error);
