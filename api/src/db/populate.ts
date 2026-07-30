@@ -1,4 +1,4 @@
-import { createPost, publishPost, createUser } from "./queries";
+import { createPost, publishPost, createUser } from "./queries.js";
 
 await createUser("test@user.com", "Test User");
 
