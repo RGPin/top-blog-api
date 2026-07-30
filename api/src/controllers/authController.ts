@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { CookieOptions, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import * as db from "../db/queries.js";
 import { generateRefreshToken } from "../utils/generateRefreshToken.js";
@@ -43,11 +43,13 @@ export const postSignup = asyncHandler(
   },
 );
 
-const cookieOptions = {
+const isProduction = process.env.NODE_ENV === "production";
+
+const cookieOptions: CookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: "strict" as const,
-  path: "/api/auth", // subject to change
+  sameSite: isProduction ? "none" : "lax",
+  path: "/", // subject to change
 };
 
 export const postLogin = asyncHandler(
