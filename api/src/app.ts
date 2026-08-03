@@ -39,6 +39,10 @@ app.use("/api/user", userRouter);
 app.use("/api/editor", editorRouter);
 app.use("/api/auth", authRouter);
 
+app.get("/api/ping", (req, res) => {
+  res.sendStatus(200);
+});
+
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
   res.status(500).json({ message: err.message });
