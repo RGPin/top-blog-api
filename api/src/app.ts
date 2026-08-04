@@ -13,7 +13,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "https://blog-editor.pinosanrg.workers.dev",
   "https://blog-client.pinosanrg.workers.dev",
-  "https://rgpin.github.io/portfolio-v2",
+  "https://rgpin.github.io",
 ];
 
 app.use(
