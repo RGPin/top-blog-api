@@ -2,37 +2,82 @@
 *::after,
 *::before {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 :root {
-  font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-  --space-xxl: 64px;
+  --color-bg: #ffffff;
+  --color-text-primary: #333333;
+  --color-text-secondary: #444444;
+  --color-text-muted: #666666;
+  --color-text-hover: #111111;
+  --color-border: #eeeeee;
 
-  --text-xs: 0.75rem; /* 12px - Captions / Small labels */
-  --text-sm: 0.875rem; /* 14px - Secondary body / Table text */
-  --text-base: 1rem; /* 16px - Standard body text */
-  --text-md: 1.25rem; /* 20px - H3 / Subheadings */
-  --text-lg: 1.5rem; /* 24px - H2 / Section titles */
-  --text-xl: 2.25rem; /* 36px - H1 / Page titles */
+  --space-xs: 0.25rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-xl: 3rem;
+  --space-lg: 2rem;
+  --space-2xl: 4rem;
 
-  --radius-xxs: 6px;
-  --radius-xs: 12px;
-  --radius-sm: 18px;
-  --radius-md: 24px;
+  --font-family-base:
+    system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-size-sm: 0.85rem;
+  --font-size-base: 0.9rem;
+  --font-size-lg: 1.125rem;
+  --line-height-base: 1.6;
 
-  --color-text-muted: rgba(0, 0, 0, 0.7);
-  --color-border-muted: rgba(0, 0, 0, 0.3);
+  --container-max-width: 680px;
+  --border-radius-sm: 4px;
+}
+
+.App {
+  font-family: var(--font-family-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.header {
+  margin-bottom: var(--space-xl);
+}
+
+.navlinks {
+  list-style: none;
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.navlinks a {
+  text-decoration: none;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.navlinks a:hover {
+  color: var(--color-text-hover);
 }
 
 a,

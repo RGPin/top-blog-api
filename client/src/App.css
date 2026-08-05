@@ -1,6 +1,17 @@
 .App {
-  max-width: 750px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
   margin: 0 auto;
-  font-family: sans-serif;
-  padding: var(--space-md);
+  padding: var(--space-xl) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }

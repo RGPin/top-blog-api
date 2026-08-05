@@ -7,6 +7,7 @@ import PostDetails from "./pages/PostDetails/PostDetails";
 function App() {
   return (
     <div className="App">
+      <div className="container">
       <Header />
       <main>
         <Routes>
@@ -15,7 +16,9 @@ function App() {
         </Routes>
       </main>
     </div>
+    </div>
   );
 }
 
 export default App;
+
